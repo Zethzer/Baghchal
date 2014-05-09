@@ -8,10 +8,12 @@ typedef struct cell_s{
 typedef struct plat_s{
 	Cell plateau[5][5];
 	int nbTigres;
-	int nbChevres;
+	int nbChevresSurPlateau;
+	int nbChevresHorsPlateau;
 	int nbChevreCapture;
+	int tourJoueur;
+	int phaseJeu;
 	Cell plateau;
-
 } Plateau;
 
 void plateau_gestion();

@@ -8,7 +8,7 @@ clean:
 	@rm -f *.o *~ $(TARGETS) *.d
 
 CC=gcc
-CFLAGS=-Wall -std=c99 -g
+CFLAGS=-Wall -std=c99 -g -lform -lncurses
 sources=$(wildcard *.c)
 
 # compile
@@ -21,7 +21,7 @@ sources=$(wildcard *.c)
 	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
 	rm -f $@.$$$$
 
-Baghchal: gestionPions.o
+Baghchal: main.o
 	$(CC) $(CFLAGS) $^ -o $@
 
 include $(sources:.c=.d)
