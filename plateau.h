@@ -10,7 +10,7 @@ typedef struct plat_s{
 	int nbTigres;
 	int nbChevres;
 	int nbChevreCapture;
-	Cell plateau
+	Cell plateau;
 
 } Plateau;
 
