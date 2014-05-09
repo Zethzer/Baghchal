@@ -10,10 +10,8 @@ typedef struct plat_s{
 	int nbTigres;
 	int nbChevres;
 	int nbChevreCapture;
-<<<<<<< HEAD
-=======
 	Cell plateau
->>>>>>> 2d05dd4b15d94876e878956acba4def2c3f9230b
+
 } Plateau;
 
 void plateau_gestion();
