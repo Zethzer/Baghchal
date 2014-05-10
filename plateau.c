@@ -47,117 +47,169 @@ bool plateau_cliquezFinTour(Pos p){
 			&& p.x <= (((COLS/2)-33)/2)+(COLS/2)+28));
 }
 
-void plateau_gestionTour(Historique h){
+int plateau_verifierMenu(Pos p){
+
+	if(/* Coordonnées de nouveau */)
+		return(1);
+	else if(/* " sauvegarder */)
+	else if(/* " charger */)
+		return(2);
+	else if(/* " quitter */)
+		exit(0);
+
+	return(0);
+}
+
+int plateau_gestionTour(Historique h){
 	Mvt m;
 	Coup *c;
+	int codeRetour;
 	bool finTour = false, coupJoue = false;
 	Pos pSourisDep, pSourisArrive;
 
 	if(!plat.phaseJeu) /* Placement */
 		while(!finTour)
 			if(!plat.tourJoueur){ /* Chèvre */
-				// fonction evenement_positionSouris => recuperer position
-				while(!gestionPions_estVide(pSourisArrive) && !coupJoue){
-					affichage_message("Placement non valide ! La case doit etre vide.");
-					// fonction evenement_positionSouris => recuperer position
+				pSourisDep=evenement_recupererEvenementSouris();
+				if((codeRetour=plateau_verifierMenu(pSourisDep)) != 1 && codeRetour)
+					return(codeRetour);
+				else{
+					while(!gestionPions_estChevre(pSourisDep)){
+						affichage_message("Ce n'est pas une chevre.");
+						pSourisDep=evenement_recupererEvenementSouris();
+					}
+					while(!gestionPions_estVide(pSourisDep) && !coupJoue){
+						affichage_message("Placement non valide ! La case doit etre vide.");
+						pSourisDep=evenement_recupererEvenementSouris();
+					}
+					if(!coupJoue){
+						plateau_ajouterChevre(pSourisDep);
+						m.deb.x=-1;
+						m.deb.y=-1;
+						m.fin=pSourisDep;
+						c=historique_coup_init(m);
+						historique_ajouter_coup(h,c);
+						coupJoue=true;
+					}
+					else
+						affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.");
+					if(plateau_cliquezAnnulerCoup(pSourisDep)){
+						historique_annuler_coup(h);
+						coupJoue=false;
+					}
+					else if(plateau_cliquezFinTour(pSourisDep))
+						finTour=true;
 				}
-				if(!coupJoue){
-					plateau_ajouterChevre(pSourisArrive);
-					c=historique_coup_init(m);
-					historique_ajouter_coup(h,c);
-					coupJoue=true;
-				}
-				else
-					affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.");
-				if(plateau_cliquezAnnulerCoup(pSourisDep)){
-					historique_annuler_coup(h);
-					coupJoue=false;
-				}
-				else if(plateau_cliquezFinTour(pSourisDep))
-					finTour=true;
 			}
 			else{ /* Tigre */
-				// fonction evenement_positionSouris => recuperer position depart (Mettre en évidence en couleur ?)
-				// fonction evenement_positionSouris => recuperer position arrivée
-				m.deb=pSourisDep;
-				m.fin=pSourisArrive;
-				while(!gestionPions_DepValide(m)){
-					affichage_message("Deplacement non valide ! Recommencez.");
-					// fonction evenement_positionSouris => recuperer position depart (Mettre en évidence en couleur ?)
-					// fonction evenement_positionSouris => recuperer position arrivée
+				pSourisDep=evenement_recupererEvenementSouris();
+				if((codeRetour=plateau_verifierMenu(pSourisDep)) != 1 && codeRetour)
+					return(codeRetour);
+				else{
 					m.deb=pSourisDep;
+					while(!gestionPions_estChevre(pSourisDep)){
+						affichage_message("Ce n'est pas un tigre.");
+						pSourisDep=evenement_recupererEvenementSouris();
+						m.deb=pSourisDep;
+					}
+					pSourisArrive=evenement_recupererEvenementSouris();
 					m.fin=pSourisArrive;
+					while(!gestionPions_DepValide(m)){
+						affichage_message("Deplacement non valide ! Recommencez.");
+						pSourisDep=evenement_recupererEvenementSouris();
+						pSourisArrive=evenement_recupererEvenementSouris();
+						m.deb=pSourisDep;
+						m.fin=pSourisArrive;
+					}
+					if(!coupJoue){
+						plateau_deplacement(m.deb,m.fin);
+						c=historique_coup_init(m);
+						historique_ajouter_coup(h,c);
+						coupJoue=true;
+					}
+					else
+						affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.");
+					if(plateau_cliquezAnnulerCoup(pSourisDep)){
+						historique_annuler_coup(h);
+						coupJoue=false;
+					}
+					else if(plateau_cliquezFinTour(pSourisDep))
+						finTour=true;
 				}
-				if(!coupJoue){
-					plateau_deplacement(m.deb,m.fin);
-					c=historique_coup_init(m);
-					historique_ajouter_coup(h,c);
-					coupJoue=true;
-				}
-				else
-					affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.");
-				if(plateau_cliquezAnnulerCoup(pSourisDep)){
-					historique_annuler_coup(h);
-					coupJoue=false;
-				}
-				else if(plateau_cliquezFinTour(pSourisDep))
-					finTour=true;
 			}
 	else /* Déplacement */
 		while(!finTour)
 			if(!plat.tourJoueur){ /* Chèvre */
-				// fonction evenement_positionSouris => recuperer position depart (Mettre en évidence en couleur ?)
-				// fonction evenement_positionSouris => recuperer position arrivée
-				m.deb=pSourisDep;
-				m.fin=pSourisArrive;
-				while(!gestionPions_DepValide(m)){
-					affichage_message("Deplacement non valide ! Recommencez.");
-					// fonction evenement_positionSouris => recuperer position depart (Mettre en évidence en couleur ?)
-					// fonction evenement_positionSouris => recuperer position arrivée
+				pSourisDep=evenement_recupererEvenementSouris();
+				if((codeRetour=plateau_verifierMenu(pSourisDep)) != 1 && codeRetour)
+					return(codeRetour);
+				else{
 					m.deb=pSourisDep;
+					while(!gestionPions_estChevre(pSourisDep)){
+						affichage_message("Ce n'est pas une chevre.");
+						pSourisDep=evenement_recupererEvenementSouris();
+						m.deb=pSourisDep;
+					}
+					pSourisArrive=evenement_recupererEvenementSouris();
 					m.fin=pSourisArrive;
+					while(!gestionPions_DepValide(m)){
+						affichage_message("Deplacement non valide ! Recommencez.");
+						pSourisDep=evenement_recupererEvenementSouris();
+						pSourisArrive=evenement_recupererEvenementSouris();
+						m.deb=pSourisDep;
+						m.fin=pSourisArrive;
+					}
+					if(!coupJoue){
+						plateau_deplacement(m.deb,m.fin);
+						c=historique_coup_init(m);
+						historique_ajouter_coup(h,c);
+						coupJoue=true;
+					}
+					else
+						affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.");
+					if(plateau_cliquezAnnulerCoup(pSourisDep)){
+						historique_annuler_coup(h);
+						coupJoue=false;
+					}
+					else if(plateau_cliquezFinTour(pSourisDep))
+						finTour=true;
 				}
-				if(!coupJoue){
-					plateau_deplacement(m.deb,m.fin);
-					c=historique_coup_init(m);
-					historique_ajouter_coup(h,c);
-					coupJoue=true;
-				}
-				else
-					affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.");
-				if(plateau_cliquezAnnulerCoup(pSourisDep)){
-					historique_annuler_coup(h);
-					coupJoue=false;
-				}
-				else if(plateau_cliquezFinTour(pSourisDep))
-					finTour=true;
 			}
 			else{ /* Tigre */
-				// fonction evenement_positionSouris => recuperer position depart (Mettre en évidence en couleur ?)
-				// fonction evenement_positionSouris => recuperer position arrivée
-				m.deb=pSourisDep;
-				m.fin=pSourisArrive;
-				while(!gestionPions_DepValide(m)){
-					affichage_message("Deplacement non valide ! Recommencez.");
-					// fonction evenement_positionSouris => recuperer position depart (Mettre en évidence en couleur ?)
-					// fonction evenement_positionSouris => recuperer position arrivée
+				pSourisDep=evenement_recupererEvenementSouris();
+				if((codeRetour=plateau_verifierMenu(pSourisDep)) != 1 && codeRetour)
+					return(codeRetour);
+				else{
 					m.deb=pSourisDep;
+					while(!gestionPions_estTigre(pSourisDep)){
+						affichage_message("Ce n'est pas un tigre.");
+						pSourisDep=evenement_recupererEvenementSouris();
+						m.deb=pSourisDep;
+					}
+					pSourisArrive=evenement_recupererEvenementSouris();
 					m.fin=pSourisArrive;
+					while(!gestionPions_DepValide(m)){
+						affichage_message("Deplacement non valide ! Recommencez.");
+						pSourisDep=evenement_recupererEvenementSouris();
+						pSourisArrive=evenement_recupererEvenementSouris();
+						m.deb=pSourisDep;
+						m.fin=pSourisArrive;
+					}
+					if(!coupJoue){
+						plateau_deplacement(m.deb,m.fin);
+						c=historique_coup_init(m);
+						historique_ajouter_coup(h,c);
+						coupJoue=true;
+					}
+					else
+						affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.");
+					if(plateau_cliquezAnnulerCoup(pSourisDep)){
+						historique_annuler_coup(h);
+						coupJoue=false;
+					}
+					else if(plateau_cliquezFinTour(pSourisDep))
+						finTour=true;
 				}
-				if(!coupJoue){
-					plateau_deplacement(m.deb,m.fin);
-					c=historique_coup_init(m);
-					historique_ajouter_coup(h,c);
-					coupJoue=true;
-				}
-				else
-					affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.");
-				if(plateau_cliquezAnnulerCoup(pSourisDep)){
-					historique_annuler_coup(h);
-					coupJoue=false;
-				}
-				else if(plateau_cliquezFinTour(pSourisDep))
-					finTour=true;
 			}
 }
 
