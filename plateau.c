@@ -1,6 +1,7 @@
 #include "plateau.h"
 
 #include <ncurses.h>
+#include "evenement.h"
 
 extern Plateau plat;
 
@@ -49,12 +50,12 @@ bool plateau_cliquezFinTour(Pos p){
 
 int plateau_verifierMenu(Pos p){
 
-	if(/* Coordonnées de nouveau */)
+	if(p.x >= 0 && p.y >= 0 && p.x <= 14 && p.y <= 3)
 		return(1);
-	else if(/* " sauvegarder */)
-	else if(/* " charger */)
+	else if(p.x >= 15 && p.y >= 0 && p.x <= 29 && p.y <= 3)
+	else if(p.x >= 30 && p.y >= 0 && p.x <= 40 && p.y <= 3)
 		return(2);
-	else if(/* " quitter */)
+	else if(p.x >= COLS-11 && p.y >= 0 && p.x <= COLS && p.y <= 3)
 		exit(0);
 
 	return(0);
@@ -67,9 +68,9 @@ int plateau_gestionTour(Historique h){
 	bool finTour = false, coupJoue = false;
 	Pos pSourisDep, pSourisArrive;
 
-	if(!plat.phaseJeu) /* Placement */
+	if(!plat.phaseJeu) // Placement
 		while(!finTour)
-			if(!plat.tourJoueur){ /* Chèvre */
+			if(!plat.tourJoueur){ // Chèvre
 				pSourisDep=evenement_recupererEvenementSouris();
 				if((codeRetour=plateau_verifierMenu(pSourisDep)) != 1 && codeRetour)
 					return(codeRetour);
@@ -101,7 +102,7 @@ int plateau_gestionTour(Historique h){
 						finTour=true;
 				}
 			}
-			else{ /* Tigre */
+			else{ // Tigre
 				pSourisDep=evenement_recupererEvenementSouris();
 				if((codeRetour=plateau_verifierMenu(pSourisDep)) != 1 && codeRetour)
 					return(codeRetour);
@@ -137,9 +138,9 @@ int plateau_gestionTour(Historique h){
 						finTour=true;
 				}
 			}
-	else /* Déplacement */
+	else // Déplacement
 		while(!finTour)
-			if(!plat.tourJoueur){ /* Chèvre */
+			if(!plat.tourJoueur){ // Chèvre
 				pSourisDep=evenement_recupererEvenementSouris();
 				if((codeRetour=plateau_verifierMenu(pSourisDep)) != 1 && codeRetour)
 					return(codeRetour);
@@ -175,7 +176,7 @@ int plateau_gestionTour(Historique h){
 						finTour=true;
 				}
 			}
-			else{ /* Tigre */
+			else{ // Tigre
 				pSourisDep=evenement_recupererEvenementSouris();
 				if((codeRetour=plateau_verifierMenu(pSourisDep)) != 1 && codeRetour)
 					return(codeRetour);

@@ -29,7 +29,7 @@ bool plateau_cliquezAnnulerCoup(Pos p);
 
 bool plateau_cliquezFinTour(Pos p);
 
-void plateau_gestionTour(Historique h);
+int plateau_gestionTour(Historique h);
 
 #endif
 

@@ -23,5 +23,3 @@ Pos evenement_recupererEvenementSouris(){
 	return(p);
 }
 
-
-
