@@ -120,7 +120,7 @@ WINDOW *affichage_init_Chat (void){
 WINDOW *affichage_init_ChevreRestante (void){
     winRest = create_newwin(18, (COLS/2)-31, (LINES-25)/2, (COLS/2)+28);
     affichage_print_in_middle(winRest, 8, 0, (COLS/2)-31, "Il vous reste :", 0);
-    affichage_print_in_middle(winRest, 9, 0, (COLS/2)-31, "20 Chevres", 0);
+    affichage_print_in_middle(winRest, 9, 0, (COLS/2)-31, "20 chevres", 0);
     affichage_print_in_middle(winRest, 10, 0, (COLS/2)-31, "a placer", 0);
     wnoutrefresh(winRest);
     return winRest;
@@ -191,6 +191,28 @@ void affichage_maj_plateau_case (Pos p){
     wprintw(winPlat, "%c", affichage_char_pion(plat.plateau[p.x][p.y]));
     wrefresh(winPlat);
 }
+
+void affichage_maj_plateau (void){
+    for (int x = 0; x<5; ++x)
+        for (int y = 0; y<5; ++y) {
+            Pos p;
+            p.x = x;
+            p.y = y;
+            affichage_maj_plateau_case(p);
+        }
+}
+
+void affichage_maj_rest (void){
+    char phrase[11];
+    phrase[0] = plat.nbChevresHorsPlateau / 10;
+    phrase[1] = plat.nbChevresHorsPlateau % 10;
+    phrase[2] = '\0';
+    strcat(phrase, " chevres");
+    affichage_print_in_middle(winRest, 9, 0, (COLS/2)-31, phrase, 0);
+}
+
+
+
 
 
 
