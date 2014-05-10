@@ -5,6 +5,8 @@
 
 Plateau plat;
 
+WINDOW *winCapture, *winHist, *winPlat, *winChat, *winRest;
+
 WINDOW *create_newwin(int height, int width, int starty, int startx)
 {	WINDOW *local_win;
     
@@ -43,7 +45,7 @@ void affichage_print_in_middle(WINDOW *win, int starty, int startx, int width, c
 
 
 WINDOW *affichage_init_case_capture (void){
-    WINDOW* winCapture = create_newwin(6, 40, 7, 5);
+    winCapture = create_newwin(6, 40, 7, 5);
     char chevrecapture[2];
     chevrecapture[0] = '0'+plat.nbChevreCapture;
     chevrecapture[1] = '\0';
@@ -54,7 +56,7 @@ WINDOW *affichage_init_case_capture (void){
 }
 
 WINDOW *affichage_init_historique (void){
-    WINDOW *winHist = create_newwin(25, 40, 15, 5);
+    winHist = create_newwin(25, 40, 15, 5);
     affichage_print_in_middle(winHist, 0, 0, 40, " Historique ", 0);
     wnoutrefresh(winHist);
     return winHist;
@@ -65,7 +67,7 @@ char affichage_char_pion(Cell c){
 }
 
 WINDOW *affichage_init_plateau (void){
-    WINDOW *winPlat = create_newwin(25, 49, (LINES-25)/2, (COLS-49)/2);
+    winPlat = create_newwin(25, 49, (LINES-25)/2, (COLS-49)/2);
     wbkgd(winPlat, COLOR_PAIR(1));
     for (int ligne = 2; ligne<23; ++ligne){
         wmove(winPlat, ligne, 4);
@@ -108,7 +110,7 @@ WINDOW *affichage_init_Annuler (void){
 }
 
 WINDOW *affichage_init_Chat (void){
-    WINDOW *winChat = create_newwin((LINES/2)-15, COLS-92, (LINES/2)+14 , 47);
+    winChat = create_newwin((LINES/2)-15, COLS-92, (LINES/2)+14 , 47);
     wmove(winChat, 1, 1);
     wprintw(winChat, "Bonjour");
     wnoutrefresh(winChat);
@@ -116,12 +118,12 @@ WINDOW *affichage_init_Chat (void){
 }
 
 WINDOW *affichage_init_ChevreRestante (void){
-    WINDOW *winChevreRest = create_newwin(18, (COLS/2)-31, (LINES-25)/2, (COLS/2)+28);
-    affichage_print_in_middle(winChevreRest, 8, 0, (COLS/2)-31, "Il vous reste :", 0);
-    affichage_print_in_middle(winChevreRest, 9, 0, (COLS/2)-31, "20 Chevres", 0);
-    affichage_print_in_middle(winChevreRest, 10, 0, (COLS/2)-31, "a placer", 0);
-    wnoutrefresh(winChevreRest);
-    return winChevreRest;
+    winRest = create_newwin(18, (COLS/2)-31, (LINES-25)/2, (COLS/2)+28);
+    affichage_print_in_middle(winRest, 8, 0, (COLS/2)-31, "Il vous reste :", 0);
+    affichage_print_in_middle(winRest, 9, 0, (COLS/2)-31, "20 Chevres", 0);
+    affichage_print_in_middle(winRest, 10, 0, (COLS/2)-31, "a placer", 0);
+    wnoutrefresh(winRest);
+    return winRest;
 }
 
 WINDOW *affichage_init_new (void){
@@ -156,17 +158,17 @@ WINDOW *affichage_init_exit (void){
     return winExit;
 }
 
-void affichage_init(WINDOW **winCapture, WINDOW **winHist, WINDOW **winPlat, WINDOW **winChat, WINDOW **winRest){
+void affichage_init(void){
     start_color();
     init_pair(1, COLOR_BLACK, COLOR_WHITE);
     init_pair(2, COLOR_RED, COLOR_WHITE);
     init_pair(3, COLOR_BLUE, COLOR_WHITE);
     affichage_print_in_middle(NULL, 3, 0, COLS, "Bagh Chal", 0);
-    *winCapture = affichage_init_case_capture();
-    *winHist = affichage_init_historique();
-    *winPlat = affichage_init_plateau();
-    *winChat = affichage_init_Chat();
-    *winRest = affichage_init_ChevreRestante();
+    affichage_init_case_capture();
+    affichage_init_historique();
+    affichage_init_plateau();
+    affichage_init_Chat();
+    affichage_init_ChevreRestante();
     affichage_init_FinTour();
     affichage_init_Annuler();
     affichage_init_new();
@@ -176,19 +178,22 @@ void affichage_init(WINDOW **winCapture, WINDOW **winHist, WINDOW **winPlat, WIN
     doupdate();
 }
 
+void affichage_message (void){
+    
+}
+
 void affichage_maj_plateau (WINDOW *winPlat){
     
 }
 
 int main(void){
-    WINDOW *winCapture, *winHist, *winPlat, *winChat, *winRest;
     int ch;
     plateau_init();
     
     initscr();
     keypad(stdscr, TRUE);
 
-    affichage_init(&winCapture, &winHist, &winPlat, &winChat, &winRest);
+    affichage_init();
     while((ch = getch()) != KEY_F(1)){
         
     }
