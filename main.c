@@ -16,10 +16,29 @@ void init(char* nomJoueurC, char* nomJoueurT);{
 }
                              
 int main(void){
-    char nomJoueurC[25];
-    char nomJoueurT[25];
-	init();
+    int ch;
+    Pos p;
+    p.x =2;
+    p.y =3;
     
-	return 0;
+    //initialisation plateau
+    plateau_init();
+    
+    //initialisation Ncurses
+    initscr();
+    keypad(stdscr, TRUE);
+    
+    //initialisation affichage
+    affichage_init();
+    
+    //modification Plateau
+    plateau_ajouterChevre(p);
+    affichage_maj_plateau_case(p);
+    
+    //attente
+    while((ch = getch()) != KEY_F(1)){
+        
+    }
+    endwin();
 }
 

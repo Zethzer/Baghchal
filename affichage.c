@@ -186,22 +186,10 @@ void affichage_message (char* Message, int color){
     wattroff(winChat, COLOR_PAIR(color));
 }
 
-void affichage_maj_plateau (WINDOW *winPlat){
-    
-}
-
-int main(void){
-    int ch;
-    plateau_init();
-    
-    initscr();
-    keypad(stdscr, TRUE);
-
-    affichage_init();
-    while((ch = getch()) != KEY_F(1)){
-        
-    }
-    endwin();
+void affichage_maj_plateau_case (Pos p){
+    wmove(winPlat, 2+5*p.y, 4+10*p.x);
+    wprintw(winPlat, "%c", affichage_char_pion(plat.plateau[p.x][p.y]));
+    wrefresh(winPlat);
 }
 
 
