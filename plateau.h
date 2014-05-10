@@ -1,6 +1,10 @@
 #ifndef __PLATEAU_H__
 #define __PLATEAU_H__
 
+#include <stdbool.h>
+#include "gestionPions.h"
+#include "historique.h"
+
 typedef struct cell_s{
 	char pion;
 } Cell;
@@ -21,7 +25,11 @@ void plateau_deplacement(Pos deb, Pos fin);
 
 void plateau_ajouterChevre(Pos p);
 
-void plateau_gestion();
+bool plateau_cliquezAnnulerCoup(Pos p);
+
+bool plateau_cliquezFinTour(Pos p);
+
+void plateau_gestionTour(Historique h);
 
 #endif
 

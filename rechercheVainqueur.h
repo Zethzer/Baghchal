@@ -1,6 +1,9 @@
 #ifndef __RECHERCHER_VAINQUEUR_H__
 #define __RECHERCHER_VAINQUEUR_H__
 
+#include <stdbool.h>
+#include "gestionPions.h"
+
 Pos rechercheVainqueur_positionSuivantePaire(Pos p);
 
 Pos rechercheVainqueur_positionSuivanteImpaire(Pos p);

@@ -1,6 +1,6 @@
 #include "rechercheVainqueur.h"
 
-#include "gestionPions.h"
+#include "plateau.h"
 
 extern Plateau plat;
 
@@ -28,7 +28,7 @@ Pos rechercheVainqueur_positionSuivantePaire(Pos p){
 }
 
 Pos rechercheVainqueur_positionSuivanteImpaire(Pos p){
-	Position position = p;
+	Pos position = p;
 
 	if(p.x == 1 && p.y == 0){
 		p.x=1;
@@ -83,13 +83,13 @@ bool rechercheVainqueur_depChevre(){
 				for(int i=0;i < 4;++i){
 					if(gestionPions_estDansPlateau(gestionPions_addPos(p,pOffset)) && !gestionPions_estTigre(gestionPions_addPos(p,pOffset)))
 						return(true);
-					p=rechercheVainqueur_positionSuivantePair(p);
+					p=rechercheVainqueur_positionSuivantePaire(p);
 				}
 			else if(gestionPions_estVide(p))
 				for(int i=0;i < 8;++i){
 					if(gestionPions_estDansPlateau(gestionPions_addPos(p,pOffset)) && !gestionPions_estTigre(gestionPions_addPos(p,pOffset)))
 						return(true);
-					p=rechercheVainqueur_positionSuivanteImpair(p);
+					p=rechercheVainqueur_positionSuivanteImpaire(p);
 				}
 		}
 
@@ -107,7 +107,7 @@ bool rechercheVainqueur_depTigre(Pos posT){
 				return(true);
 			else if(gestionPions_estChevre(gestionPions_addPos(posT,p)) && gestionPions_estVide(gestionPions_addPos(posT,gestionPions_multPosSca(2,p))))
 				return(true);
-			p=rechercheVainqueur_positionSuivantePair(p);
+			p=rechercheVainqueur_positionSuivantePaire(p);
 		}
 	else
 		for(int i=0;i < 8;++i){
@@ -115,7 +115,7 @@ bool rechercheVainqueur_depTigre(Pos posT){
 				return(true);
 			else if(gestionPions_estChevre(gestionPions_addPos(posT,p)) && gestionPions_estVide(gestionPions_addPos(posT,gestionPions_multPosSca(2,p))))
 				return(true);
-			p=rechercheVainqueur_positionSuivanteImpair(p);
+			p=rechercheVainqueur_positionSuivanteImpaire(p);
 		}
 
 	return(false);
@@ -129,7 +129,7 @@ bool rechercheVainqueur_depTousTigre(){
 			p.x=i;
 			p.y=j;
 			if(gestionPions_estTigre(p))
-				if(rechercheVainqueur_depTigre(plat.plateau[i][j])){
+				if(rechercheVainqueur_depTigre(p)){
 					return(true);
 				}
 		}

@@ -1,6 +1,8 @@
 #ifndef __HISTORIQUE_H__
 #define __HISTORIQUE_H__
 
+#include "gestionPions.h"
+
 typedef struct coup_s{
     Mvt mvt;
     int chevre_mange;

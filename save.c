@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "save.h"
 #include "plateau.h"
@@ -13,7 +14,7 @@ void save_export (char* nomSave){
     fprintf(fic, "\\board\n");
     for (int i=0; i<5; ++i){
         for(int j=0; j<5; ++j){
-            fprintf(fic, plat.plateau[i][j]);
+            fputc(plat.plateau[i][j].pion, fic);
         }
         fprintf(fic, "\n");
     }
@@ -25,22 +26,28 @@ void save_export (char* nomSave){
 
 void save_import (char* nomSave){
     FILE* fic;
-    int ligne=0;
+    int lig=0;
     char destination[100] = "save/";
     char ligne[12];
+    char nb[2];
     strcat(destination, nomSave);
     fic = fopen(destination, "r");
     while (fgets(ligne, sizeof(ligne), fic)){
-        if (ligne > 0 && ligne <6)
+        if (lig > 0 && lig <6)
             for (int i=0; i<5; ++i){
-                plat.plateau[ligne-1][i] = ligne[i];
+                plat.plateau[lig-1][i].pion = ligne[i];
             }
-        else if (ligne == 7)
+        else if (lig == 7)
             plat.tourJoueur = (ligne[8]=='T')?1:0;
-        else if (ligne == 8)
-            plat.phaseJeu = atoi(ligne[7]);
-        else if (ligne == 9)
-            plat.nbChevreCapture = atoi(ligne[10]);
-        ++ligne;
+        else if (lig == 8){
+            nb[0]=ligne[7];
+            nb[1]='\0';
+            plat.phaseJeu = atoi(nb);
+        }
+        else if (lig == 9)
+            nb[0]=ligne[10];
+            nb[1]='\0';
+            plat.nbChevreCapture = atoi(nb);
+        ++lig;
     }
 }

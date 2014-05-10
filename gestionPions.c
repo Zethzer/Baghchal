@@ -1,19 +1,20 @@
 #include "gestionPions.h"
 
 #include <stdlib.h>
+#include "plateau.h"
 
 extern Plateau plat;
 
 bool gestionPions_estVide(Pos p){
-	return(plat.plateau[p.x][p.y].pion == ".");
+	return(plat.plateau[p.x][p.y].pion == '.');
 }
 
 bool gestionPions_estChevre(Pos p){
-	return(plat.plateau[p.x][p.y].pion == "C");
+	return(plat.plateau[p.x][p.y].pion == 'C');
 }
 
 bool gestionPions_estTigre(Pos p){
-	return(plat.plateau[p.x][p.y].pion == "T");
+	return(plat.plateau[p.x][p.y].pion == 'T');
 }
 
 bool gestionPions_peutPlacer(Pos p){
@@ -52,12 +53,12 @@ Pos gestionPions_subPos(Pos p1, Pos p2){
 }
 
 Pos gestionPions_divPosSca(int v, Pos p){
-	Pos p;
+	Pos position;
 
-	p.x=p.x/v;
-	p.y=p.y/v;
+	position.x=p.x/v;
+	position.y=p.y/v;
 
-	return(p);
+	return(position);
 }
 
 Pos gestionPions_posMilieu(Pos p1, Pos p2){

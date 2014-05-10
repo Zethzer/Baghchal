@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "historique.h"
 #include "plateau.h"
-#include "gestionPions.h"
 
 extern Plateau plat;
 
@@ -10,7 +9,7 @@ void historique_init (Historique h){
     h.first = NULL;
 }
 
-Coup *historique_coup_init (Mvt m, int chevre_mange){
+Coup *historique_coup_init (Mvt m){
     Coup *c = malloc(sizeof(Coup));
     c->next = NULL;
     c->mvt = m;
@@ -28,7 +27,7 @@ void historique_detruire_hist (Coup* first){
 }
 
 void historique_ajouter_coup (Historique h, Coup* c){
-    Coup* current = h->first;
+    Coup* current = h.first;
     Coup* pred = NULL;
     while (current){
         current = current->next;
@@ -36,11 +35,11 @@ void historique_ajouter_coup (Historique h, Coup* c){
     if (pred)
         pred->next = c;
     else
-        h->first = c;
+        h.first = c;
 }
 
 int historique_suppr_dernier_coup (Historique h){
-    Coup* current = h->first;
+    Coup* current = h.first;
     Coup* pred = NULL;
     if (!current)
         return 1;
@@ -50,13 +49,13 @@ int historique_suppr_dernier_coup (Historique h){
     if (pred)
         pred->next = NULL;
     else
-        h->first = NULL;
+        h.first = NULL;
     historique_free_coup(current);
     return 0;
 }
 
 Coup *historique_dernier_coup (Historique h){
-    Coup* current = h->first;
+    Coup* current = h.first;
     if (!current)
         return NULL;
     while (current->next){
@@ -66,7 +65,7 @@ Coup *historique_dernier_coup (Historique h){
 }
 
 void historique_map (Historique h, fonctionCoup f){
-    Coup* current = h->first;
+    Coup* current = h.first;
     while (current){
         f(current);
         current = current->next;
@@ -80,30 +79,5 @@ void historique_annuler_coup (Historique h){
         plateau_ajouterChevre(gestionPions_posMilieu(dernier->mvt.fin, dernier->mvt.deb));
     historique_suppr_dernier_coup(h);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
