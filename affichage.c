@@ -3,7 +3,7 @@
 #include "plateau.h"
 #include "affichage.h"
 
-Plateau plat;
+extern Plateau plat;
 
 WINDOW *winCapture, *winHist, *winPlat, *winChat, *winRest;
 

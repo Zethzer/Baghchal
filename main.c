@@ -3,10 +3,11 @@
 #include <ncurses.h>
 
 #include "plateau.h"
+#include "affichage.h"
 
 Plateau plat;
 
-void init(char* nomJoueurC, char* nomJoueurT);{
+/*void init(char* nomJoueurC, char* nomJoueurT){
     if(affichage_menu())
         affichage_initJoueurs(nomJoueurC, nomJoueurT);
     else
@@ -14,7 +15,7 @@ void init(char* nomJoueurC, char* nomJoueurT);{
     affichage_initPlateau();
     plateau_init();
 	plateau_gestion();
-}
+}*/
                              
 int main(void){
     int ch;

@@ -35,4 +35,6 @@ WINDOW *affichage_init_exit (void);
 
 void affichage_message (char* Message, int color);
 
+void affichage_maj_plateau_case (Pos p);
+
 #endif
