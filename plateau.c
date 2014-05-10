@@ -56,6 +56,7 @@ int plateau_verifierMenu(Pos p){
 		return(1);
 	else if(p.x >= 15 && p.y >= 0 && p.x <= 29 && p.y <= 3)
 		;
+		//save_import(affichage_boiteDialogue(0));
 	else if(p.x >= 30 && p.y >= 0 && p.x <= 40 && p.y <= 3)
 		return(2);
 	else if(p.x >= COLS-11 && p.y >= 0 && p.x <= COLS && p.y <= 3)
@@ -125,7 +126,7 @@ int plateau_gestionTour(Historique h){
 						m.deb=pSourisDep;
 						m.fin=pSourisArrive;
 					}
-					if(!coupJoue){
+					if(!coupJoue){ // Le cas de manger une chèvre
 						plateau_deplacement(m.deb,m.fin);
 						c=historique_coup_init(m);
 						historique_ajouter_coup(h,c);
