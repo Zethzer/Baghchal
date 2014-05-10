@@ -1,6 +1,7 @@
 #include "plateau.h"
 
 #include <ncurses.h>
+#include <stdlib.h>
 #include "evenement.h"
 
 extern Plateau plat;
@@ -53,6 +54,7 @@ int plateau_verifierMenu(Pos p){
 	if(p.x >= 0 && p.y >= 0 && p.x <= 14 && p.y <= 3)
 		return(1);
 	else if(p.x >= 15 && p.y >= 0 && p.x <= 29 && p.y <= 3)
+		;
 	else if(p.x >= 30 && p.y >= 0 && p.x <= 40 && p.y <= 3)
 		return(2);
 	else if(p.x >= COLS-11 && p.y >= 0 && p.x <= COLS && p.y <= 3)
