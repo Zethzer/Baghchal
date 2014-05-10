@@ -5,11 +5,21 @@
 
 Plateau plat;
 
-int main(void){
-
-	plateau_init();
+void init(char* nomJoueurC, char* nomJoueurT);{
+    if(affichage_menu())
+        affichage_initJoueurs(nomJoueurC, nomJoueurT);
+    else
+        affichage_initJoueur();
+    affichage_initPlateau();
+    plateau_init();
 	plateau_gestion();
-
+}
+                             
+int main(void){
+    char nomJoueurC[25];
+    char nomJoueurT[25];
+	init();
+    
 	return 0;
 }
 
