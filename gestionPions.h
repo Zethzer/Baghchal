@@ -45,5 +45,7 @@ bool gestionPions_peutSauter(Mvt m);
 
 bool gestionPions_DepValide(Mvt m);
 
+bool gestionPions_estSaut(Mvt m);
+
 #endif
 

@@ -102,3 +102,7 @@ bool gestionPions_DepValide(Mvt m){
 	return(gestionPions_peutDeplacer(m) || gestionPions_peutSauter(m));
 }
 
+bool gestionPions_estSaut(Mvt m){
+    return((gestionPions_distDiag(m.deb, m.fin)==2) || (gestionPions_distLigne(m.deb, m.fin)==2));
+}
+

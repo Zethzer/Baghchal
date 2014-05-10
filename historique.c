@@ -86,7 +86,7 @@ void historique_annuler_coup (Historique h){
         plateau_deplacement(dernier->mvt.fin, dernier->mvt.deb);
     if (dernier->chevre_mange)
         plateau_ajouterChevre(gestionPions_posMilieu(dernier->mvt.fin, dernier->mvt.deb));
-    if (dernier->phase != phaseJeu)
-        phaseJeu = 1;
+    if (dernier->phase != plat.phaseJeu)
+        plat.phaseJeu = 1;
     historique_suppr_dernier_coup(h);
 }

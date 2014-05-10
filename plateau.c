@@ -92,7 +92,7 @@ int plateau_gestionTour(Historique h){
 						m.deb.x=-1;
 						m.deb.y=-1;
 						m.fin=pSourisDep;
-						c=historique_coup_init(m);
+						c=historique_coup_init(m, 0, 0, 1, plat.phaseJeu);
 						historique_ajouter_coup(h,c);
 						coupJoue=true;
 					}
@@ -128,7 +128,7 @@ int plateau_gestionTour(Historique h){
 					}
 					if(!coupJoue){ // Le cas de manger une chèvre
 						plateau_deplacement(m.deb,m.fin);
-						c=historique_coup_init(m);
+						c=historique_coup_init(m, 1, gestionPions_estSaut(m), 0, plat.phaseJeu);
 						historique_ajouter_coup(h,c);
 						coupJoue=true;
 					}
@@ -166,7 +166,7 @@ int plateau_gestionTour(Historique h){
 					}
 					if(!coupJoue){
 						plateau_deplacement(m.deb,m.fin);
-						c=historique_coup_init(m);
+						c=historique_coup_init(m, 0, 0, 0, 2);
 						historique_ajouter_coup(h,c);
 						coupJoue=true;
 					}
@@ -202,7 +202,7 @@ int plateau_gestionTour(Historique h){
 					}
 					if(!coupJoue){
 						plateau_deplacement(m.deb,m.fin);
-						c=historique_coup_init(m);
+						c=historique_coup_init(m, 1, gestionPions_estSaut(m), 0, 2);
 						historique_ajouter_coup(h,c);
 						coupJoue=true;
 					}
