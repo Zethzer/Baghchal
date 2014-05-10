@@ -1,8 +1,9 @@
 #include <stdio.h>
+#include <string.h>
 #include "plateau.h"
 #include "affichage.h"
 
-extern Plateau plat;
+Plateau plat;
 
 WINDOW *create_newwin(int height, int width, int starty, int startx)
 {	WINDOW *local_win;
@@ -54,13 +55,13 @@ WINDOW *affichage_init_case_capture (void){
 
 WINDOW *affichage_init_historique (void){
     WINDOW *winHist = create_newwin(25, 40, 15, 5);
-    affichage_print_in_middle(winCapture, 0, 0, 40, " Historique ", 0);
+    affichage_print_in_middle(winHist, 0, 0, 40, " Historique ", 0);
     wnoutrefresh(winHist);
     return winHist;
 }
 
 char affichage_char_pion(Cell c){
-    return (c->pion == '.')?' ':c->pion;
+    return (c.pion == '.')?' ':c.pion;
 }
 
 WINDOW *affichage_init_plateau (void){
@@ -155,7 +156,7 @@ WINDOW *affichage_init_exit (void){
     return winExit;
 }
 
-void affichage_init(WINDOW **winCapture, WINDOW **winHist, WINDOW **winPlat, WINDOW **winChat){
+void affichage_init(WINDOW **winCapture, WINDOW **winHist, WINDOW **winPlat, WINDOW **winChat, WINDOW **winRest){
     start_color();
     init_pair(1, COLOR_BLACK, COLOR_WHITE);
     init_pair(2, COLOR_RED, COLOR_WHITE);
@@ -164,7 +165,8 @@ void affichage_init(WINDOW **winCapture, WINDOW **winHist, WINDOW **winPlat, WIN
     *winCapture = affichage_init_case_capture();
     *winHist = affichage_init_historique();
     *winPlat = affichage_init_plateau();
-    *winChat = affichage_init_Chat;
+    *winChat = affichage_init_Chat();
+    *winRest = affichage_init_ChevreRestante();
     affichage_init_FinTour();
     affichage_init_Annuler();
     affichage_init_new();
@@ -175,12 +177,18 @@ void affichage_init(WINDOW **winCapture, WINDOW **winHist, WINDOW **winPlat, WIN
 }
 
 int main(void){
-    WINDOW *winCapture, *winHist, *winPlat, *winChat;
+    WINDOW *winCapture, *winHist, *winPlat, *winChat, *winRest;
     int ch;
-    affichage_init(&winCapture, &winHist, &winPlat, &winChat);
+    plateau_init();
+    
+    initscr();
+    keypad(stdscr, TRUE);
+
+    affichage_init(&winCapture, &winHist, &winPlat, &winChat, &winRest);
     while((ch = getch()) != KEY_F(1)){
         
     }
+    endwin();
 }
 
 
