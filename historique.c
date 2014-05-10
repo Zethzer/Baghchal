@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "historique.h"
+#include "plateau.h"
+
+extern Plateau plat;
 
 void historique_init (Historique h){
     h.first = NULL;
@@ -59,3 +62,4 @@ void historique_map (Historique h, fonctionCoup f){
     }
 }
 
+void historique_annuler_coup (
