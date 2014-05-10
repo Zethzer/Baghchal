@@ -79,11 +79,11 @@ int plateau_gestionTour(Historique h){
 					return(codeRetour);
 				else{
 					while(!gestionPions_estChevre(pSourisDep)){
-						affichage_message("Ce n'est pas une chevre.");
+						affichage_message("Ce n'est pas une chevre.",4);
 						pSourisDep=evenement_recupererEvenementSouris();
 					}
 					while(!gestionPions_estVide(pSourisDep) && !coupJoue){
-						affichage_message("Placement non valide ! La case doit etre vide.");
+						affichage_message("Placement non valide ! La case doit etre vide.",4);
 						pSourisDep=evenement_recupererEvenementSouris();
 					}
 					if(!coupJoue){
@@ -96,7 +96,7 @@ int plateau_gestionTour(Historique h){
 						coupJoue=true;
 					}
 					else
-						affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.");
+						affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.",4);
 					if(plateau_cliquezAnnulerCoup(pSourisDep)){
 						historique_annuler_coup(h);
 						coupJoue=false;
@@ -112,14 +112,14 @@ int plateau_gestionTour(Historique h){
 				else{
 					m.deb=pSourisDep;
 					while(!gestionPions_estChevre(pSourisDep)){
-						affichage_message("Ce n'est pas un tigre.");
+						affichage_message("Ce n'est pas un tigre.",4);
 						pSourisDep=evenement_recupererEvenementSouris();
 						m.deb=pSourisDep;
 					}
 					pSourisArrive=evenement_recupererEvenementSouris();
 					m.fin=pSourisArrive;
 					while(!gestionPions_DepValide(m)){
-						affichage_message("Deplacement non valide ! Recommencez.");
+						affichage_message("Deplacement non valide ! Recommencez.",4);
 						pSourisDep=evenement_recupererEvenementSouris();
 						pSourisArrive=evenement_recupererEvenementSouris();
 						m.deb=pSourisDep;
@@ -132,7 +132,7 @@ int plateau_gestionTour(Historique h){
 						coupJoue=true;
 					}
 					else
-						affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.");
+						affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.",4);
 					if(plateau_cliquezAnnulerCoup(pSourisDep)){
 						historique_annuler_coup(h);
 						coupJoue=false;
@@ -150,14 +150,14 @@ int plateau_gestionTour(Historique h){
 				else{
 					m.deb=pSourisDep;
 					while(!gestionPions_estChevre(pSourisDep)){
-						affichage_message("Ce n'est pas une chevre.");
+						affichage_message("Ce n'est pas une chevre.",4);
 						pSourisDep=evenement_recupererEvenementSouris();
 						m.deb=pSourisDep;
 					}
 					pSourisArrive=evenement_recupererEvenementSouris();
 					m.fin=pSourisArrive;
 					while(!gestionPions_DepValide(m)){
-						affichage_message("Deplacement non valide ! Recommencez.");
+						affichage_message("Deplacement non valide ! Recommencez.",4);
 						pSourisDep=evenement_recupererEvenementSouris();
 						pSourisArrive=evenement_recupererEvenementSouris();
 						m.deb=pSourisDep;
@@ -170,7 +170,7 @@ int plateau_gestionTour(Historique h){
 						coupJoue=true;
 					}
 					else
-						affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.");
+						affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.",4);
 					if(plateau_cliquezAnnulerCoup(pSourisDep)){
 						historique_annuler_coup(h);
 						coupJoue=false;
@@ -186,14 +186,14 @@ int plateau_gestionTour(Historique h){
 				else{
 					m.deb=pSourisDep;
 					while(!gestionPions_estTigre(pSourisDep)){
-						affichage_message("Ce n'est pas un tigre.");
+						affichage_message("Ce n'est pas un tigre.",4);
 						pSourisDep=evenement_recupererEvenementSouris();
 						m.deb=pSourisDep;
 					}
 					pSourisArrive=evenement_recupererEvenementSouris();
 					m.fin=pSourisArrive;
 					while(!gestionPions_DepValide(m)){
-						affichage_message("Deplacement non valide ! Recommencez.");
+						affichage_message("Deplacement non valide ! Recommencez.",4);
 						pSourisDep=evenement_recupererEvenementSouris();
 						pSourisArrive=evenement_recupererEvenementSouris();
 						m.deb=pSourisDep;
@@ -206,7 +206,7 @@ int plateau_gestionTour(Historique h){
 						coupJoue=true;
 					}
 					else
-						affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.");
+						affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.",4);
 					if(plateau_cliquezAnnulerCoup(pSourisDep)){
 						historique_annuler_coup(h);
 						coupJoue=false;
