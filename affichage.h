@@ -3,7 +3,7 @@
 
 #include <ncurses.h>
 
-void affichage_init(WINDOW **winCapture, WINDOW **winHist, WINDOW **winPlat, WINDOW **winChat, WINDOW **winRest);
+void affichage_init(void);
 
 WINDOW *create_newwin(int height, int width, int starty, int startx);
 
