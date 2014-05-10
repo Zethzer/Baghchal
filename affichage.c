@@ -163,6 +163,7 @@ void affichage_init(void){
     init_pair(1, COLOR_BLACK, COLOR_WHITE);
     init_pair(2, COLOR_RED, COLOR_WHITE);
     init_pair(3, COLOR_BLUE, COLOR_WHITE);
+    init_pair(4, COLOR_RED, COLOR_BLACK);
     affichage_print_in_middle(NULL, 3, 0, COLS, "Bagh Chal", 0);
     affichage_init_case_capture();
     affichage_init_historique();
@@ -178,8 +179,11 @@ void affichage_init(void){
     doupdate();
 }
 
-void affichage_message (char* Message){
-    
+void affichage_message (char* Message, int color){
+    wmove(winChat, 1, 1);
+    wattron(winChat, COLOR_PAIR(color));
+    wprintw(winChat, Message);
+    wattroff(winChat, COLOR_PAIR(color));
 }
 
 void affichage_maj_plateau (WINDOW *winPlat){
