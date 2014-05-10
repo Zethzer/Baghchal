@@ -4,7 +4,7 @@
 
 Pos evenement_recupererEvenementSouris(){
 	Pos p;
-	char c;
+	int c;
 	MEVENT event;
 
 	mousemask(BUTTON1_PRESSED | BUTTON1_RELEASED, NULL);
@@ -12,7 +12,7 @@ Pos evenement_recupererEvenementSouris(){
 	c=getch();
 	switch(c){
 		case KEY_MOUSE:
-			if(get_mouse(&event) == OK){
+			if(getmouse(&event) == OK){
 				if(event.bstate && BUTTON1_PRESSED){
 					p.x=event.x;
 					p.y=event.y;

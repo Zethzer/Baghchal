@@ -3,6 +3,7 @@
 #include <ncurses.h>
 #include <stdlib.h>
 #include "evenement.h"
+#include "affichage.h"
 
 extern Plateau plat;
 
@@ -214,5 +215,6 @@ int plateau_gestionTour(Historique h){
 						finTour=true;
 				}
 			}
+    return 0;
 }
 

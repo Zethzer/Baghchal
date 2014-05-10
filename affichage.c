@@ -178,7 +178,7 @@ void affichage_init(void){
     doupdate();
 }
 
-void affichage_message (void){
+void affichage_message (char* Message){
     
 }
 

@@ -33,4 +33,6 @@ WINDOW *affichage_init_load (void);
 
 WINDOW *affichage_init_exit (void);
 
+void affichage_message (char* Message);
+
 #endif
