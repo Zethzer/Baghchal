@@ -13,8 +13,13 @@ typedef struct plat_s{
 	int nbChevreCapture;
 	int tourJoueur;
 	int phaseJeu;
-	Cell plateau;
 } Plateau;
+
+void plateau_init();
+
+void plateau_deplacement(Pos deb, Pos fin);
+
+void plateau_ajouterChevre(Pos p);
 
 void plateau_gestion();
 

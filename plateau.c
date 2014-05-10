@@ -29,6 +29,10 @@ void plateau_init(){
 
 }
 
+void plateau_deplacement(Pos deb, Pos fin){
+
+}
+
 void plateau_gestion(){
 	Mvt m;
 

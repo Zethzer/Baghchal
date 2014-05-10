@@ -1,5 +1,5 @@
-#ifndef Bagh_chal_save_h
-#define Bagh_chal_save_h
+#ifndef __SAVE_H__
+#define __SAVE_H__
 
 void save_export (char* nomSave);
 

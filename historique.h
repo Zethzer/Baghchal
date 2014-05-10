@@ -1,5 +1,5 @@
-#ifndef Bagh_chal_historique_h
-#define Bagh_chal_historique_h
+#ifndef __HISTORIQUE_H__
+#define __HISTORIQUE_H__
 
 typedef struct coup_s{
     Mvt mvt;

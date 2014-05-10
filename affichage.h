@@ -1,6 +1,6 @@
-#ifndef Bagh_chal_affichage_h
-#define Bagh_chal_affichage_h
+#ifndef __AFFICHAGE_H__
+#define __AFFICHAGE_H__
 
-
+void affichage_init(void);
 
 #endif
