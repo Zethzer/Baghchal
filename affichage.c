@@ -176,6 +176,10 @@ void affichage_init(WINDOW **winCapture, WINDOW **winHist, WINDOW **winPlat, WIN
     doupdate();
 }
 
+void affichage_maj_plateau (WINDOW *winPlat){
+    
+}
+
 int main(void){
     WINDOW *winCapture, *winHist, *winPlat, *winChat, *winRest;
     int ch;
@@ -190,6 +194,9 @@ int main(void){
     }
     endwin();
 }
+
+
+
 
 
 
