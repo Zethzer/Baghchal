@@ -37,4 +37,7 @@ void affichage_message (char* Message, int color);
 
 void affichage_maj_plateau_case (Pos p);
 
+// 0 pour la sauvegarde, 1 pour le chargement
+// char* affichage_boiteDialogue(int v);
+
 #endif
