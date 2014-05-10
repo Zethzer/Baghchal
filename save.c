@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include "save.h"
 #include "plateau.h"
 
 extern Plateau plat;
