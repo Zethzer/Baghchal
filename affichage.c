@@ -204,11 +204,30 @@ void affichage_maj_plateau (void){
 
 void affichage_maj_rest (void){
     char phrase[11];
-    phrase[0] = plat.nbChevresHorsPlateau / 10;
-    phrase[1] = plat.nbChevresHorsPlateau % 10;
+    phrase[0] = '0' + plat.nbChevresHorsPlateau / 10;
+    phrase[1] = '0' + plat.nbChevresHorsPlateau % 10;
     phrase[2] = '\0';
     strcat(phrase, " chevres");
     affichage_print_in_middle(winRest, 9, 0, (COLS/2)-31, phrase, 0);
+}
+
+void affichage_maj_capture (void){
+    char phrase[2];
+    phrase[0] = '0' + plat.nbChevreCapture;
+    phrase[1] = '\0';
+    affichage_print_in_middle(winCapture, 3, 0, 40, phrase, 0);
+}
+
+void affichage_maj_Hist_etape (Coup* c, int ligne){
+    wmove(winHist, ligne, 1);
+    if (c->placement_chevre)
+        wprintw(winHist, "Chevre : placement : en (%d,%d)", c->mvt.fin.x, c->mvt.fin.y);
+    else
+        wprintw(winHist, "%s : deplacement : de (%d,%d) a (%d,%d) %s", c->tigre?"Tigre":"Chevre", c->mvt.deb.x, c->mvt.deb.y, c->mvt.fin.x, c->mvt.fin.y, c->chevre_mange?"et mange une chevre":"");
+}
+
+void affichage_maj_Hist (void){
+    
 }
 
 

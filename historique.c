@@ -66,9 +66,11 @@ Coup *historique_dernier_coup (Historique h){
 
 void historique_map (Historique h, fonctionCoup f){
     Coup* current = h.first;
+    int ligne = 2;
     while (current){
-        f(current);
+        f(current, ligne);
         current = current->next;
+        ligne += 2;
     }
 }
 
@@ -79,5 +81,3 @@ void historique_annuler_coup (Historique h){
         plateau_ajouterChevre(gestionPions_posMilieu(dernier->mvt.fin, dernier->mvt.deb));
     historique_suppr_dernier_coup(h);
 }
-
-
