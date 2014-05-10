@@ -9,10 +9,14 @@ void historique_init (Historique h){
     h.first = NULL;
 }
 
-Coup *historique_coup_init (Mvt m){
+Coup *historique_coup_init (Mvt m, int tigre, int chevre_mange, int placement_chevre, int phase){
     Coup *c = malloc(sizeof(Coup));
     c->next = NULL;
     c->mvt = m;
+    c->tigre = tigre;
+    c->chevre_mange = chevre_mange;
+    c->placement_chevre = placement_chevre;
+    c->phase = phase;
     return c;
 }
 
@@ -76,8 +80,13 @@ void historique_map (Historique h, fonctionCoup f){
 
 void historique_annuler_coup (Historique h){
     Coup* dernier = historique_dernier_coup(h);
-    plateau_deplacement(dernier->mvt.fin, dernier->mvt.deb);
+    if (dernier->placement_chevre)
+        plat.plateau[dernier->mvt.fin.x][dernier->mvt.fin.y].pion = '.';
+    else
+        plateau_deplacement(dernier->mvt.fin, dernier->mvt.deb);
     if (dernier->chevre_mange)
         plateau_ajouterChevre(gestionPions_posMilieu(dernier->mvt.fin, dernier->mvt.deb));
+    if (dernier->phase != phaseJeu)
+        phaseJeu = 1;
     historique_suppr_dernier_coup(h);
 }

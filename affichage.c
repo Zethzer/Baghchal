@@ -223,7 +223,7 @@ void affichage_maj_Hist_etape (Coup* c, int ligne){
     if (c->placement_chevre)
         wprintw(winHist, "Chevre : placement : en (%d,%d)", c->mvt.fin.x, c->mvt.fin.y);
     else
-        wprintw(winHist, "%s : deplacement : de (%d,%d) a (%d,%d) %s", c->tigre?"Tigre":"Chevre", c->mvt.deb.x, c->mvt.deb.y, c->mvt.fin.x, c->mvt.fin.y, c->chevre_mange?"et mange une chevre":"");
+        wprintw(winHist, "%s : %s : de (%d,%d) a (%d,%d)", c->tigre?"Tigre":"Chevre",c->chevre_mange?"mange":"deplacement", c->mvt.deb.x, c->mvt.deb.y, c->mvt.fin.x, c->mvt.fin.y);
 }
 
 void affichage_maj_Hist (void){

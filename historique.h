@@ -20,7 +20,7 @@ typedef void (*fonctionCoup)(Coup *c, int ligne);
 
 void historique_init (Historique h);
 
-Coup *historique_coup_init (Mvt m);
+Coup *historique_coup_init (Mvt m, int tigre, int chevre_mange, int placement_chevre, int phase);
 
 void historique_free_coup (Coup* c);
 
