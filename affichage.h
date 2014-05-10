@@ -37,6 +37,12 @@ void affichage_message (char* Message, int color);
 
 void affichage_maj_plateau_case (Pos p);
 
+void affichage_maj_rest (void);
+
+void affichage_maj_capture (void);
+
+void affichage_maj_Hist_etape (Coup* c, int ligne);
+
 // 0 pour la sauvegarde, 1 pour le chargement
 // char* affichage_boiteDialogue(int v);
 
