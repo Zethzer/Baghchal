@@ -3,6 +3,7 @@
 
 typedef struct coup_s{
     Mvt mvt;
+    int chevre_mange;
     struct coup_s* next;
 }Coup;
 
@@ -24,6 +25,10 @@ void historique_ajouter_coup (Historique h, Coup* c);
 
 int historique_suppr_dernier_coup (Historique h);
 
+Coup *historique_dernier_coup (Historique h);
+
 void historique_map (Historique h, fonctionCoup f);
+
+void historique_annuler_coup (Historique h);
 
 #endif

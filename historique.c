@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "historique.h"
 #include "plateau.h"
+#include "gestionPions.h"
 
 extern Plateau plat;
 
@@ -9,7 +10,7 @@ void historique_init (Historique h){
     h.first = NULL;
 }
 
-Coup *historique_coup_init (Mvt m){
+Coup *historique_coup_init (Mvt m, int chevre_mange){
     Coup *c = malloc(sizeof(Coup));
     c->next = NULL;
     c->mvt = m;
@@ -54,6 +55,16 @@ int historique_suppr_dernier_coup (Historique h){
     return 0;
 }
 
+Coup *historique_dernier_coup (Historique h){
+    Coup* current = h->first;
+    if (!current)
+        return NULL;
+    while (current->next){
+        current = current->next;
+    }
+    return current;
+}
+
 void historique_map (Historique h, fonctionCoup f){
     Coup* current = h->first;
     while (current){
@@ -62,4 +73,37 @@ void historique_map (Historique h, fonctionCoup f){
     }
 }
 
-void historique_annuler_coup (
+void historique_annuler_coup (Historique h){
+    Coup* dernier = historique_dernier_coup(h);
+    plateau_deplacement(dernier->mvt.fin, dernier->mvt.deb);
+    if (dernier->chevre_mange)
+        plateau_ajouterChevre(gestionPions_posMilieu(dernier->mvt.fin, dernier->mvt.deb));
+    historique_suppr_dernier_coup(h);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
