@@ -23,7 +23,7 @@ void save_export (char* nomSave){
     fprintf(fic, "\\endboard\n\\player %c\n", (plat.tourJoueur)?'T':'G');
     fprintf(fic, "\\phase %d\n", plat.phaseJeu);
     fprintf(fic, "\\captured %d\n", plat.nbChevreCapture);
-    fprintf(fic, "\\restante %d\n", plat.nbChevreHorsPlateau);
+    fprintf(fic, "\\restante %d\n", plat.nbChevresHorsPlateau);
     fprintf(fic, "\\coupJoue %d", plat.coupJoue);
     fclose(fic);
     strcpy(phrase, "Partie Sauvegardee en tant que ");
@@ -53,7 +53,7 @@ void save_import (char* nomSave){
             plat.nbChevreCapture = atoi(ligne+10);
         }
         else if (lig == 10){
-            plat.nbChevreHorsPlateau = atoi(ligne+10);
+            plat.nbChevresHorsPlateau = atoi(ligne+10);
         }
         else if (lig == 11){
             plat.coupJoue = atoi(ligne+10);
