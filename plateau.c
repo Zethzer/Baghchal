@@ -106,6 +106,21 @@ Mvt plateau_deplacementPion(int tourJoueur, Pos pSourisDep){
 	return(m);
 }
 
+Pos plateau_placementPion(Pos pSourisDep){
+	Pos pSouris;
+
+	while(!gestionPions_estChevre(pSourisDep)){
+		affichage_message("Ce n'est pas une chevre.",4);
+		pSouris=evenement_recupererEvenementSouris();
+	}
+	while(!gestionPions_estVide(pSourisDep) && !coupJoue){
+		affichage_message("Placement non valide ! La case doit etre vide.",4);
+		pSouris=evenement_recupererEvenementSouris();
+	}
+
+	return(pSouris);
+}
+
 int plateau_gestionTour(Historique h){
 	Mvt m;
 	Coup *c;
@@ -120,20 +135,13 @@ int plateau_gestionTour(Historique h){
 				if((codeRetour=plateau_verifierMenu(pSourisDep)) != 1 && codeRetour)
 					return(codeRetour);
 				else{
-					while(!gestionPions_estChevre(pSourisDep)){
-						affichage_message("Ce n'est pas une chevre.",4);
-						pSourisDep=evenement_recupererEvenementSouris();
-					}
-					while(!gestionPions_estVide(pSourisDep) && !coupJoue){
-						affichage_message("Placement non valide ! La case doit etre vide.",4);
-						pSourisDep=evenement_recupererEvenementSouris();
-					}
+					pSourisDep=plateau_placementPion(pSourisDep);
 					if(!coupJoue){
 						plateau_ajouterChevre(pSourisDep);
 						m.deb.x=-1;
 						m.deb.y=-1;
 						m.fin=pSourisDep;
-						c=historique_coup_init(m, 0, 0, 1, plat.phaseJeu);
+						c=historique_init_coup(m, 0, 0, 1, plat.phaseJeu);
 						historique_ajouter_coup(&h,c);
 						coupJoue=true;
 					}
@@ -155,7 +163,7 @@ int plateau_gestionTour(Historique h){
 					m=plateau_deplacementPion(plat.tourJoueur, pSourisDep);
 					if(!coupJoue){
 						plateau_deplacement(m.deb,m.fin);
-						c=historique_coup_init(m, 0, 0, 0, 2);
+						c=historique_init_coup(m, 0, 0, 0, 2);
 						historique_ajouter_coup(&h,c);
 						coupJoue=true;
 					}
@@ -178,7 +186,7 @@ int plateau_gestionTour(Historique h){
 				m=plateau_deplacementPion(plat.tourJoueur, pSourisDep);
 				if(!coupJoue){
 					plateau_deplacement(m.deb,m.fin);
-					c=historique_coup_init(m, 1, gestionPions_estSaut(m), 0, 2);
+					c=historique_init_coup(m, 1, gestionPions_estSaut(m), 0, 2);
 					historique_ajouter_coup(&h,c);
 					coupJoue=true;
 				}
