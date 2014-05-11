@@ -53,12 +53,14 @@ bool plateau_cliquezFinTour(Pos p){
 }
 
 int plateau_verifierMenu(Pos p){
+	char* nomFichierSauv[75];
 
 	if(p.x >= 0 && p.y >= 0 && p.x <= 14 && p.y <= 3)
 		return(1);
-	else if(p.x >= 15 && p.y >= 0 && p.x <= 29 && p.y <= 3)
-		;
-		//save_import(affichage_boiteDialogue(0));
+	else if(p.x >= 15 && p.y >= 0 && p.x <= 29 && p.y <= 3){
+		affichage_boiteDialogue(0, nomFichierSauv);
+		save_import(nomFichierSauv);
+	}
 	else if(p.x >= 30 && p.y >= 0 && p.x <= 40 && p.y <= 3)
 		return(2);
 	else if(p.x >= COLS-11 && p.y >= 0 && p.x <= COLS && p.y <= 3)
@@ -154,65 +156,68 @@ int plateau_gestionTour(Historique h){
 	Coup *c;
 	int codeRetour, codeBouton;
 	bool finTour = false, coupJoue = false;
-	Pos pSourisDep, pPlat;
+	Pos pEvent, pPlat;
 
 	while(!finTour)
 		if(!plat.tourJoueur){ // Chèvre
-			if(!plat.phaseJeu){ // Placement
-				pSourisDep=evenement_recupererEvenementSouris();
-				if((codeRetour=plateau_verifierMenu(pSourisDep)) != 1 && codeRetour)
-					return(codeRetour);
-				else if(plateau_clic2case(pSourisDep,&pPlat)){
-					if(!coupJoue){
-						plateau_placementPion(pPlat,h);
-						coupJoue=true;
+			if(!evenement_recupererEvenement(h,&pEvent))
+				;
+			else
+				if(!plat.phaseJeu){ // Placement
+					if((codeRetour=plateau_verifierMenu(pEvent)) != 1 && codeRetour)
+						return(codeRetour);
+					else if(plateau_clic2case(pEvent,&pPlat)){
+						if(!coupJoue){
+							plateau_placementPion(pPlat,h);
+							coupJoue=true;
+						}
+						else
+							affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.",4);
 					}
+					if(coupJoue && (codeBouton=plateau_clicAnnulerFinirTour(h,pEvent)))
+						finTour=true;
 					else
-						affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.",4);
+						coupJoue=false;
 				}
-				if(coupJoue && (codeBouton=plateau_clicAnnulerFinirTour(h,pSourisDep)))
-					finTour=true;
-				else
-					coupJoue=false;
-			}
-			else{ // Déplacement
-				pSourisDep=evenement_recupererEvenementSouris();
-				if((codeRetour=plateau_verifierMenu(pSourisDep)) != 1 && codeRetour)
+				else{ // Déplacement
+					if((codeRetour=plateau_verifierMenu(pEvent)) != 1 && codeRetour)
+						return(codeRetour);
+					else if(plateau_clic2case(pEvent, &pPlat)){
+						if(!coupJoue){
+							m=plateau_deplacementPion(plat.tourJoueur, pPlat);
+							c=historique_init_coup(m, 0, 0, 0, 2);
+							historique_ajouter_coup(&h,c);
+							coupJoue=true;
+						}
+						else
+							affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.",4);
+					}
+					if(coupJoue && (codeBouton=plateau_clicAnnulerFinirTour(h,pEvent)))
+						finTour=true;
+					else
+						coupJoue=false;
+				}
+		}
+		else{ // Tigre
+			if(!evenement_recupererEvenement(h,&pEvent))
+				;
+			else
+				if((codeRetour=plateau_verifierMenu(pEvent)) != 1 && codeRetour)
 					return(codeRetour);
-				else if(plateau_clic2case(pSourisDep, &pPlat)){
+				else if(plateau_clic2case(pEvent, &pPlat)){
 					if(!coupJoue){
 						m=plateau_deplacementPion(plat.tourJoueur, pPlat);
-						c=historique_init_coup(m, 0, 0, 0, 2);
+						c=historique_init_coup(m, 1, gestionPions_estSaut(m), 0, 2);
 						historique_ajouter_coup(&h,c);
 						coupJoue=true;
 					}
 					else
 						affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.",4);
 				}
-				if(coupJoue && (codeBouton=plateau_clicAnnulerFinirTour(h,pSourisDep)))
-					finTour=true;
-				else
-					coupJoue=false;
-			}
-		}
-		else{ // Tigre
-			pSourisDep=evenement_recupererEvenementSouris();
-			if((codeRetour=plateau_verifierMenu(pSourisDep)) != 1 && codeRetour)
-				return(codeRetour);
-			else if(plateau_clic2case(pSourisDep, &pPlat)){
-				if(!coupJoue){
-					m=plateau_deplacementPion(plat.tourJoueur, pPlat);
-					c=historique_init_coup(m, 1, gestionPions_estSaut(m), 0, 2);
-					historique_ajouter_coup(&h,c);
-					coupJoue=true;
-				}
-				else
-					affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.",4);
-			}
-			if(coupJoue && (codeBouton=plateau_clicAnnulerFinirTour(h,pSourisDep)))
-					finTour=true;
-				else
-					coupJoue=false;
+				if(coupJoue && (codeBouton=plateau_clicAnnulerFinirTour(h,pEvent)))
+						finTour=true;
+					else
+						coupJoue=false;
 		}
 	return 0;
 }

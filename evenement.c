@@ -3,8 +3,7 @@
 #include <stdbool.h>
 #include <ncurses.h>
 
-Pos evenement_recupererEvenementSouris(){
-	Pos p;
+int evenement_recupererEvenement(Historique h, Pos* pEvent){
 	int c;
 	MEVENT event;
 
@@ -16,13 +15,20 @@ Pos evenement_recupererEvenementSouris(){
 		case KEY_MOUSE:
 			if(getmouse(&event) == OK){
 				if(event.bstate & BUTTON1_PRESSED){
-					p.x=event.x;
-					p.y=event.y;
+					pEvent->x=event.x;
+					pEvent->y=event.y;
 				}
+				return(1);
 			}
 		break;
+		case KEY_UP:
+			affichage_scrolldown_hist(h);
+			return(0);
+		break;
+		case KEY_DOWN:
+			affichage_scrollup_hist(h);
+			return(0);
+		break;
 	}
-
-	return(p);
 }
 

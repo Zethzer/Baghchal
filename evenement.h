@@ -3,6 +3,6 @@
 
 #include "gestionPions.h"
 
-Pos evenement_recupererEvenementSouris();
+int evenement_recupererEvenement(Historique h, Pos* pEvent);
 
 #endif
