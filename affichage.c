@@ -159,6 +159,7 @@ WINDOW *affichage_init_exit (void){
 }
 
 void affichage_init(void){
+    initscr();
     start_color();
     init_pair(1, COLOR_BLACK, COLOR_WHITE);
     init_pair(2, COLOR_RED, COLOR_WHITE);
@@ -221,13 +222,14 @@ void affichage_maj_capture (void){
 void affichage_maj_Hist_etape (Coup* c, int ligne){
     wmove(winHist, ligne+2, 1);
     if (c->placement_chevre)
-        wprintw(winHist, "Chevre : placement : en (%d,%d)", c->mvt.fin.x, c->mvt.fin.y);
+        wprintw(winHist, "Chevre : placement en (%d,%d)", c->mvt.fin.x, c->mvt.fin.y);
     else
-        wprintw(winHist, "%s : %s : de (%d,%d) a (%d,%d)", c->tigre?"Tigre":"Chevre",c->chevre_mange?"mange":"deplacement", c->mvt.deb.x, c->mvt.deb.y, c->mvt.fin.x, c->mvt.fin.y);
+        wprintw(winHist, "%s : %s de (%d,%d) a (%d,%d)", c->tigre?"Tigre":"Chevre",c->chevre_mange?"mange":"deplacement", c->mvt.deb.x, c->mvt.deb.y, c->mvt.fin.x, c->mvt.fin.y);
 }
 
 void affichage_maj_Hist (Historique h){
     historique_map(h, affichage_maj_Hist_etape);
+    wrefresh(winHist);
 }
 
 void affichage_scrollup_hist (Historique* h){

@@ -43,6 +43,8 @@ void affichage_maj_capture (void);
 
 void affichage_maj_Hist_etape (Coup* c, int ligne);
 
+void affichage_maj_Hist (Historique h);
+
 void affichage_boiteDialogue(int i, char* str);
 
 #endif

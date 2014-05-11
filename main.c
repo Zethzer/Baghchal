@@ -26,21 +26,23 @@ int main(void){
     Historique h;
     Pos p = gestionPions_initPos (2, 3);
     Mvt m = gestionPions_initMvt (1, 1, 0, 0);
+    
     Coup* c = historique_init_coup (m, 1, 0, 0 ,0);
     
     affichage_init();
     historique_init(&h);
+    plateau_init();
+    keypad(stdscr, TRUE);
     
     //Modif plateau
     plateau_ajouterChevre(p);
     affichage_maj_plateau_case(p);
     
     //Modif Historique
+    
     for (int i=0; i<22; ++i)
         historique_ajouter_coup (&h, c);
-    for (int i=0; i<22; ++i)
-        affichage_maj_Hist_etape (c, i);
-    wrefresh(winHist);
+    affichage_maj_Hist(h);
     
     //Attente
     while((ch = getch()) != KEY_F(3)){
