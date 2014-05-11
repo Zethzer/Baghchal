@@ -12,7 +12,7 @@ void historique_init (Historique* h){
     h->nbCoups = 0;
 }
 
-Coup *historique_init_coup (Mvt m, int tigre, int chevre_mange, int placement_chevre, int phase){
+Coup *historique_init_coup (Mvt m, int tigre, int chevre_mange, int placement_chevre, int phase, int joueur){
     Coup *c = malloc(sizeof(Coup));
     c->next = NULL;
     c->mvt = m;
@@ -20,6 +20,7 @@ Coup *historique_init_coup (Mvt m, int tigre, int chevre_mange, int placement_ch
     c->chevre_mange = chevre_mange;
     c->placement_chevre = placement_chevre;
     c->phase = phase;
+    c->joueur = joueur;
     return c;
 }
 
@@ -97,5 +98,6 @@ void historique_annuler_coup (Historique* h){
         plateau_ajouterChevre(gestionPions_posMilieu(dernier->mvt.fin, dernier->mvt.deb));
     if (dernier->phase != plat.phaseJeu)
         plat.phaseJeu = 0;
+    plat.tourJoueur = dernier->joueur;
     historique_suppr_dernier_coup(h);
 }

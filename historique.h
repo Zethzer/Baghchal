@@ -9,6 +9,7 @@ typedef struct coup_s{
     int chevre_mange;
     int placement_chevre;
     int phase;
+    int joueur;
     struct coup_s* next;
 }Coup;
 
@@ -22,7 +23,7 @@ typedef void (*fonctionCoup)(Coup *c, int ligne);
 
 void historique_init (Historique* h);
 
-Coup *historique_init_coup (Mvt m, int tigre, int chevre_mange, int placement_chevre, int phase);
+Coup *historique_init_coup (Mvt m, int tigre, int chevre_mange, int placement_chevre, int phase, int joueur);
 
 void historique_free_coup (Coup* c);
 
