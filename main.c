@@ -11,43 +11,28 @@ Plateau plat;
 
 extern WINDOW* winHist;
 
-/*void init(char* nomJoueurC, char* nomJoueurT){
-    if(affichage_menu())
-        affichage_initJoueurs(nomJoueurC, nomJoueurT);
-    else
-        affichage_initJoueur();
-    affichage_initPlateau();
+void init(){
     plateau_init();
-	plateau_gestion();
-}*/
+    affichage_init();
+    historique_init(h);
+    keypad(stdscr, TRUE);
+}
                              
 int main(void){
-    int ch;
+    int ch, fini = 0;
     Historique h;
     char str[20];
     Pos p = gestionPions_initPos (2, 3);
     Mvt m = gestionPions_initMvt (1, 1, 0, 0);
     Coup* c;
+
+    init(&h);
     
-    plateau_init();
-    affichage_init();
-    historique_init(&h);
-    keypad(stdscr, TRUE);
-    
-    //Modif plateau
-    plateau_ajouterChevre(p);
-    affichage_maj_plateau_case(p);
-    
-    //Modif Historique
-    c = historique_init_coup(m, 0, 0, 1, 0);
-    historique_ajouter_coup (&h, c);
-    affichage_maj_Hist(h);
-    affichage_boiteDialogue(0, str);
-    
-    //Attente
-    while((ch = getch()) != KEY_F(3)){
+    while (!fini){
         
     }
+    
+    
     endwin();
     return 0;
 }
