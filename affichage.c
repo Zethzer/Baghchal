@@ -111,8 +111,6 @@ WINDOW *affichage_init_Annuler (void){
 
 WINDOW *affichage_init_Chat (void){
     winChat = create_newwin((LINES/2)-15, COLS-92, (LINES/2)+14 , 47);
-    wmove(winChat, 1, 1);
-    wprintw(winChat, "Bonjour");
     wnoutrefresh(winChat);
     return winChat;
 }
@@ -165,11 +163,13 @@ void affichage_init(void){
     init_pair(2, COLOR_RED, COLOR_WHITE);
     init_pair(3, COLOR_BLUE, COLOR_WHITE);
     init_pair(4, COLOR_RED, COLOR_BLACK);
+    init_pair(5, COLOR_WHITE, COLOR_BLACK);
     affichage_print_in_middle(NULL, 3, 0, COLS, "Bagh Chal", 0);
     affichage_init_case_capture();
     affichage_init_historique();
     affichage_init_plateau();
     affichage_init_Chat();
+    affichage_message("Bonjour", 5);
     affichage_init_ChevreRestante();
     affichage_init_FinTour();
     affichage_init_Annuler();
@@ -181,10 +181,13 @@ void affichage_init(void){
 }
 
 void affichage_message (char* Message, int color){
+    wclear(winChat);
+    affichage_init_Chat();
     wmove(winChat, 1, 1);
     wattron(winChat, COLOR_PAIR(color));
     wprintw(winChat, Message);
     wattroff(winChat, COLOR_PAIR(color));
+    wrefresh(winChat);
 }
 
 void affichage_maj_plateau_case (Pos p){
@@ -228,6 +231,8 @@ void affichage_maj_Hist_etape (Coup* c, int ligne){
 }
 
 void affichage_maj_Hist (Historique h){
+    wclear(winHist);
+    affichage_init_historique();
     historique_map(h, affichage_maj_Hist_etape);
     wrefresh(winHist);
 }
@@ -240,19 +245,18 @@ void affichage_scrollup_hist (Historique* h){
 }
 
 void affichage_scrolldown_hist (Historique* h){
-    if(h->nbCoups - h->premierAffiche < 22){
+    if(h->nbCoups - h->premierAffiche == 23){
         ++h->premierAffiche;
         affichage_maj_Hist (*h);
     }
 }
 
 void affichage_boiteDialogue(int load, char* str){
-    WINDOW *winDiag = create_newwin(7, 50, (LINES-7)/2, (COLS-50)/2);
-    wbkgd (winDiag, COLOR_PAIR(1));
-    wmove (winDiag, 1, 1);
-    wprintw (winDiag, "%s", load?"Chargement":"Sauvegarde");
-    affichage_print_in_middle(winDiag, 3, 0, 50, "Entrer le nom du fichier de sauvegarde : ", 0);
-    getnstr(str, sizeof(str)-1);
+    affichage_message(load?"Chargement":"Sauvegarde", 5);
+    affichage_print_in_middle(winChat, 3, 0, 50, "Entrer le nom du fichier de sauvegarde : ", 0);
+    wrefresh(winChat);
+    wmove(winChat, 5, 4);
+    wgetstr(winChat, str);
 }
 
 

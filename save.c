@@ -22,6 +22,7 @@ void save_export (char* nomSave){
     fprintf(fic, "\\phase %d\n", plat.phaseJeu);
     fprintf(fic, "\\captured %d", plat.nbChevreCapture);
     fclose(fic);
+    affichage_message("Partie Sauvegardée ")
 }
 
 void save_import (char* nomSave){
