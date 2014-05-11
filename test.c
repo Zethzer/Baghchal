@@ -13,19 +13,15 @@ int main(void){
 	// Déclarations
 	Historique h;
 	char nomFichierChar[100];
-	int codeVainqueur, codeTour;
+	int codeVainqueur, codeTour, quitter = 0;
 	Pos pEvent;
 
 	// Initialisation
-	initscr();
-	goto start;
+	init(&h);
 
-start:
-	plateau_init();
-	affichage_init();
-	historique_init(&h);
-
-	while(!(codeVainqueur=rechercheVainqueur_vainqueurPresent())){
+	while(!quitter){
+		if((codeVainqueur=rechercheVainqueur_vainqueurPresent()))
+			plateau_gestionVainqueur(&h,codeVainqueur);
 		affichage_maj_all(h);
 		if(plat.tourJoueur)
 			affichage_message("Joueur Tigre, a vous de jouer.",5);
@@ -38,24 +34,15 @@ start:
 				if(!plat.nbChevresHorsPlateau)
 					plat.phaseJeu=1;
 			}
-			else if(codeTour == 1)
-				goto start;
+			else if(codeTour == 1){
+				init(&h);
+			}
 			else if(codeTour == 2){
 				affichage_boiteDialogue(1, nomFichierChar);
 				save_import(nomFichierChar);
 			}
 		}
 	}
-	if(codeVainqueur == 1)
-		;
-		// Effacer la fenêtre
-		// Menu : Nouveau, Charger, Quitter
-		// Message : Tigre vainqueur
-	else
-		;
-		// Effacer la fenêtre
-		// Menu : Nouveau, Charger, Quitter
-		// Message : Chèvre vainqueur
 
 	endwin();
 	return 0;
