@@ -4,10 +4,10 @@
 
 #include "plateau.h"
 #include "affichage.h"
+#include "save.h"
+#include "rechercheVainqueur.h"
 
 Plateau plat;
-
-extern WINDOW *winHist;
 
 /*void init(char* nomJoueurC, char* nomJoueurT){
     if(affichage_menu())
@@ -20,10 +20,12 @@ extern WINDOW *winHist;
 }*/
                              
 int main(void){
-    int ch;
-    Pos p;
-    p.x =2;
-    p.y =3;
+    int ch;// codeVainqueur, codeTour;
+    Historique h;
+    // MEVENT event;
+    // Pos p;
+    // p.x =2;
+    // p.y =3;
     
     //initialisation plateau
     plateau_init();
@@ -35,20 +37,30 @@ int main(void){
     //initialisation affichage
     affichage_init();
     
-    //modification Plateau
+    /*modification Plateau
     plateau_ajouterChevre(p);
-    affichage_maj_plateau_case(p);
-    
-    //Modif Historique
-    for (int i=0; i<22; ++i)
-        affichage_maj_Hist_etape (NULL, i);
-    wrefresh(winHist);
+    affichage_maj_plateau_case(p);*/
+
+    historique_init(&h);
+
+    /*while((codeVainqueur=rechercheVainqueur_vainqueurPresent()) == 0){
+        if((codeTour=plateau_gestionTour(h)) == 0)
+            ;
+        else if (codeTour == 1){
+            plateau_init();
+            historique_init(h);
+            affichage_init();
+        }
+        else if (codeTour == 2)
+            ;
+            //save_import(affichage_boiteDialogue(1));
+    }*/
     
     //attente
-    while((ch = getch()) != KEY_F(1)){
+    while((ch = getch()) != KEY_F(3)){
         
     }
-    
     endwin();
+    return 0;
 }
 

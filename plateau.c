@@ -104,13 +104,13 @@ int plateau_gestionTour(Historique h){
 						m.deb.y=-1;
 						m.fin=pSourisDep;
 						c=historique_coup_init(m, 0, 0, 1, plat.phaseJeu);
-						historique_ajouter_coup(h,c);
+						historique_ajouter_coup(&h,c);
 						coupJoue=true;
 					}
 					else
 						affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.",4);
 					if(plateau_cliquezAnnulerCoup(pSourisDep)){
-						historique_annuler_coup(h);
+						historique_annuler_coup(&h);
 						coupJoue=false;
 					}
 					else if(plateau_cliquezFinTour(pSourisDep))
@@ -140,13 +140,13 @@ int plateau_gestionTour(Historique h){
 					if(!coupJoue){ // Le cas de manger une chèvre
 						plateau_deplacement(m.deb,m.fin);
 						c=historique_coup_init(m, 1, gestionPions_estSaut(m), 0, plat.phaseJeu);
-						historique_ajouter_coup(h,c);
+						historique_ajouter_coup(&h,c);
 						coupJoue=true;
 					}
 					else
 						affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.",4);
 					if(plateau_cliquezAnnulerCoup(pSourisDep)){
-						historique_annuler_coup(h);
+						historique_annuler_coup(&h);
 						coupJoue=false;
 					}
 					else if(plateau_cliquezFinTour(pSourisDep))
@@ -178,13 +178,13 @@ int plateau_gestionTour(Historique h){
 					if(!coupJoue){
 						plateau_deplacement(m.deb,m.fin);
 						c=historique_coup_init(m, 0, 0, 0, 2);
-						historique_ajouter_coup(h,c);
+						historique_ajouter_coup(&h,c);
 						coupJoue=true;
 					}
 					else
 						affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.",4);
 					if(plateau_cliquezAnnulerCoup(pSourisDep)){
-						historique_annuler_coup(h);
+						historique_annuler_coup(&h);
 						coupJoue=false;
 					}
 					else if(plateau_cliquezFinTour(pSourisDep))
@@ -214,13 +214,13 @@ int plateau_gestionTour(Historique h){
 					if(!coupJoue){
 						plateau_deplacement(m.deb,m.fin);
 						c=historique_coup_init(m, 1, gestionPions_estSaut(m), 0, 2);
-						historique_ajouter_coup(h,c);
+						historique_ajouter_coup(&h,c);
 						coupJoue=true;
 					}
 					else
 						affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.",4);
 					if(plateau_cliquezAnnulerCoup(pSourisDep)){
-						historique_annuler_coup(h);
+						historique_annuler_coup(&h);
 						coupJoue=false;
 					}
 					else if(plateau_cliquezFinTour(pSourisDep))
