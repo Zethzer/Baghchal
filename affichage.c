@@ -277,13 +277,14 @@ void affichage_boiteDialogue(int load, char* str){
     wgetstr(winChat, str);
 }
 
-void affichage_message_victoire(int tigre){
+WINDOW* affichage_message_victoire(int tigre){
     WINDOW *winWin = create_newwin(9, 60, (LINES-9)/2, (COLS-60)/2);
     wbkgd(winWin, COLOR_PAIR(3));
     char phrase[60] = "Victoire des ";
     strcat(phrase, tigre?"Tigres":"Chevres");
     affichage_print_in_middle(winWin, 4, 0, 60, 0);
     wrefresh(winWin);
+    return(winWin);
 }
 
 

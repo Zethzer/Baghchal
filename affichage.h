@@ -106,10 +106,15 @@ WINDOW *affichage_init_load (void);
 /*
  E : aucune
  S : aucune
- Role : initialise la fenetre/bouton de sauvegarde
+ Role : initialise la fenetre/bouton quitter
  */
 WINDOW *affichage_init_exit (void);
 
+/*
+ E : Message et identifiant d'une paire de couleur
+ S : aucune
+ Role : Affiche un message d'une certaine paire de couleur dans la fenetre de chat
+ */
 void affichage_message (char* Message, int color);
 
 void affichage_message_erreur (char* Message, int color);
@@ -134,6 +139,6 @@ void affichage_scrolldown_hist (Historique* h);
 
 void affichage_boiteDialogue(int i, char* str);
 
-void affichage_message_victoire (int tigre);
+WINDOW* affichage_message_victoire (int tigre);
 
 #endif
