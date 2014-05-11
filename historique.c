@@ -93,6 +93,6 @@ void historique_annuler_coup (Historique* h){
     if (dernier->chevre_mange)
         plateau_ajouterChevre(gestionPions_posMilieu(dernier->mvt.fin, dernier->mvt.deb));
     if (dernier->phase != plat.phaseJeu)
-        plat.phaseJeu = 1;
+        plat.phaseJeu = 0;
     historique_suppr_dernier_coup(h);
 }

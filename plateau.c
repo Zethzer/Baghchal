@@ -76,17 +76,6 @@ int clic2case (Pos pIn, Pos *pOut){
         return 0;
 }
 
-int plateau_gestionTour (Historique h){
-    return 0;
-}
-
-
-
-
-
-
-
-/*
 int plateau_gestionTour(Historique h){
 	Mvt m;
 	Coup *c;
@@ -240,4 +229,3 @@ int plateau_gestionTour(Historique h){
 			}
     return 0;
 }
-*/
