@@ -1,4 +1,5 @@
 #include "evenement.h"
+#include "affichage.h"
 
 #include <stdbool.h>
 #include <ncurses.h>
