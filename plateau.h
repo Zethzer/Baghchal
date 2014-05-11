@@ -33,7 +33,7 @@ int clic2case (Pos pIn, Pos *pOut);
 
 int plateau_clicAnnulerFinirTour(Historique h, Pos pSourisDep);
 
-Mvt plateau_deplacementPion(int tourJoueur, Pos pSourisDep);
+Mvt plateau_deplacementPion(int tourJoueur, Pos pSourisDep, Historique h);
 
 void plateau_placementPion(Pos pSourisDep, Historique h);
 

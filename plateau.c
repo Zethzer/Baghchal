@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "evenement.h"
 #include "affichage.h"
+#include "save.h"
 
 extern Plateau plat;
 
@@ -14,7 +15,7 @@ void plateau_init(){
 	plat.nbChevresHorsPlateau=20;
 	plat.nbChevreCapture=0;
 	plat.tourJoueur=0;
-	plat.phaseJeu=1;
+	plat.phaseJeu=0;
 
 	plat.plateau[0][0].pion='T';
 	plat.plateau[0][4].pion='T';
@@ -53,18 +54,20 @@ bool plateau_cliquezFinTour(Pos p){
 }
 
 int plateau_verifierMenu(Pos p){
-	char* nomFichierSauv[75];
+	char nomFichierSauv[75];
 
 	if(p.x >= 0 && p.y >= 0 && p.x <= 14 && p.y <= 3)
 		return(1);
 	else if(p.x >= 15 && p.y >= 0 && p.x <= 29 && p.y <= 3){
 		affichage_boiteDialogue(0, nomFichierSauv);
-		save_import(nomFichierSauv);
+		save_export(nomFichierSauv);
 	}
 	else if(p.x >= 30 && p.y >= 0 && p.x <= 40 && p.y <= 3)
 		return(2);
-	else if(p.x >= COLS-11 && p.y >= 0 && p.x <= COLS && p.y <= 3)
+	else if(p.x >= COLS-11 && p.y >= 0 && p.x <= COLS && p.y <= 3){
+		endwin();
 		exit(0);
+	}
 
 	return(0);
 }
@@ -95,7 +98,7 @@ int plateau_clicAnnulerFinirTour(Historique h, Pos pSourisDep){
 	return(0);
 }
 
-Mvt plateau_deplacementPion(int tourJoueur, Pos pSourisDep){
+Mvt plateau_deplacementPion(int tourJoueur, Pos pSourisDep, Historique h){
 	Mvt m;
 	Pos pSouris, pSourisArrive, pMilieu;
 
@@ -103,21 +106,21 @@ Mvt plateau_deplacementPion(int tourJoueur, Pos pSourisDep){
 	if(!tourJoueur)
 		while(!gestionPions_estChevre(pSourisDep)){
 			affichage_message("Ce n'est pas une chevre.",4);
-			pSouris=evenement_recupererEvenementSouris();
+			evenement_recupererEvenement(h,&pSouris);
 			m.deb=pSouris;
 		}
 	else
 		while(!gestionPions_estTigre(pSourisDep)){
 			affichage_message("Ce n'est pas un tigre.",4);
-			pSouris=evenement_recupererEvenementSouris();
+			evenement_recupererEvenement(h,&pSouris);
 			m.deb=pSouris;
 		}
-	pSourisArrive=evenement_recupererEvenementSouris();
+	evenement_recupererEvenement(h,&pSouris);
 	m.fin=pSourisArrive;
 	while(!gestionPions_DepValide(m)){
 		affichage_message("Deplacement non valide ! Recommencez.",4);
-		pSouris=evenement_recupererEvenementSouris();
-		pSourisArrive=evenement_recupererEvenementSouris();
+		evenement_recupererEvenement(h,&pSouris);
+		evenement_recupererEvenement(h,&pSouris);
 		m.deb=pSouris;
 		m.fin=pSourisArrive;
 	}
@@ -137,11 +140,11 @@ void plateau_placementPion(Pos pSourisDep, Historique h){
 
 	while(!gestionPions_estChevre(pSourisDep)){
 		affichage_message("Ce n'est pas une chevre.",4);
-		pSouris=evenement_recupererEvenementSouris();
+		evenement_recupererEvenement(h,&pSouris);
 	}
 	while(!gestionPions_estVide(pSourisDep)){
 		affichage_message("Placement non valide ! La case doit etre vide.",4);
-		pSouris=evenement_recupererEvenementSouris();
+		evenement_recupererEvenement(h,&pSouris);
 	}
 	plateau_ajouterChevre(pSouris);
 	m.deb.x=5;
@@ -184,7 +187,7 @@ int plateau_gestionTour(Historique h){
 						return(codeRetour);
 					else if(plateau_clic2case(pEvent, &pPlat)){
 						if(!coupJoue){
-							m=plateau_deplacementPion(plat.tourJoueur, pPlat);
+							m=plateau_deplacementPion(plat.tourJoueur, pPlat, h);
 							c=historique_init_coup(m, 0, 0, 0, 2);
 							historique_ajouter_coup(&h,c);
 							coupJoue=true;
@@ -206,7 +209,7 @@ int plateau_gestionTour(Historique h){
 					return(codeRetour);
 				else if(plateau_clic2case(pEvent, &pPlat)){
 					if(!coupJoue){
-						m=plateau_deplacementPion(plat.tourJoueur, pPlat);
+						m=plateau_deplacementPion(plat.tourJoueur, pPlat, h);
 						c=historique_init_coup(m, 1, gestionPions_estSaut(m), 0, 2);
 						historique_ajouter_coup(&h,c);
 						coupJoue=true;
