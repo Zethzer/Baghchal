@@ -21,6 +21,9 @@ extern WINDOW *winHist;
                              
 int main(void){
     int ch;
+    Mvt m;
+    Historique h;
+    Coup* c;
     Pos p;
     p.x =2;
     p.y =3;
@@ -40,8 +43,12 @@ int main(void){
     affichage_maj_plateau_case(p);
     
     //Modif Historique
+    m = gestionPions_initMvt(1, 1, 0, 0);
+    c = historique_init_coup (m, 1, 0, 0, 0);
     for (int i=0; i<22; ++i)
-        affichage_maj_Hist_etape (NULL, i);
+        historique_ajouter_coup (&h, c);
+    for (int i=0; i<22; ++i)
+        affichage_maj_Hist_etape (c, i);
     wrefresh(winHist);
     
     //attente

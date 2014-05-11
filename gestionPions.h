@@ -23,6 +23,10 @@ bool gestionPions_peutPlacer(Pos p);
 
 int gestionPions_sommeImpair(Pos p);
 
+Pos gestionPions_initPos (int x, int y);
+
+Mvt gestionPions_initMvt (int xdeb, int ydeb, int xfin, int yfin);
+
 Pos gestionPions_multPosSca(int v, Pos p);
 
 Pos gestionPions_addPos(Pos p1, Pos p2);
