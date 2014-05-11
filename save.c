@@ -9,6 +9,7 @@ extern Plateau plat;
 void save_export (char* nomSave){
     FILE* fic;
     char destination[100] = "save/";
+    char phrase [strlen(nomSave) + 32];
     strcat(destination, nomSave);
     fic = fopen(destination, "w");
     fprintf(fic, "\\board\n");
@@ -22,15 +23,16 @@ void save_export (char* nomSave){
     fprintf(fic, "\\phase %d\n", plat.phaseJeu);
     fprintf(fic, "\\captured %d", plat.nbChevreCapture);
     fclose(fic);
-    destination = "Partie Sauvegardée en tant que ";
-    strcat(destination, nomSave);
-    affichage_message(destination, 5);
+    phrase = "Partie Sauvegardée en tant que ";
+    strcat(phrase, nomSave);
+    affichage_message(phrase, 5);
 }
 
 void save_import (char* nomSave){
     FILE* fic;
     int lig=0;
     char destination[100] = "save/";
+    char phrase[strlen(nomSave)+30];
     char ligne[12];
     char nb[2];
     strcat(destination, nomSave);
@@ -53,7 +55,7 @@ void save_import (char* nomSave){
             plat.nbChevreCapture = atoi(nb);
         ++lig;
     }
-    destination = "Partie Chargee depuis ";
-    strcat(destination, nomSave);
-    affichage_message(destination, 5);
+    phrase = "Partie Chargee depuis ";
+    strcat(phrase, nomSave);
+    affichage_message(phrase, 5);
 }
