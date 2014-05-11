@@ -20,6 +20,8 @@ typedef struct plat_s{
 	int coupJoue;
 } Plateau;
 
+void init(Historique* h);
+
 void plateau_init();
 
 void plateau_deplacement(Pos deb, Pos fin);
@@ -36,9 +38,11 @@ int plateau_clicAnnulerFinirTour(Historique* h, Pos pSourisDep);
 
 int plateau_deplacementPion(Pos pSourisDep, Mvt* m, Historique *h);
 
-void plateau_placementPion(Pos pSourisDep, Historique* h);
+int plateau_placementPion(Pos pSourisDep, Historique* h);
 
 int plateau_gestionTour(Historique* h, Pos pEvent);
+
+void plateau_gestionVainqueur(Historique* h, int v);
 
 #endif
 
