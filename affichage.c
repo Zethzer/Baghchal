@@ -169,7 +169,7 @@ void affichage_init(void){
     affichage_init_historique();
     affichage_init_plateau();
     affichage_init_Chat();
-    affichage_message("Bonjour", 5);
+    affichage_message("Bonjour !", 5);
     affichage_init_ChevreRestante();
     affichage_init_FinTour();
     affichage_init_Annuler();
@@ -181,10 +181,19 @@ void affichage_init(void){
 }
 
 void affichage_message (char* Message, int color){
-    wclear(winChat);
     affichage_init_Chat();
     wmove(winChat, 1, 1);
     wattron(winChat, COLOR_PAIR(color));
+    wprintw(winChat, Message);
+    wattroff(winChat, COLOR_PAIR(color));
+    wrefresh(winChat);
+}
+
+void affichage_message_erreur (char* Message, int color){
+    affichage_init_Chat();
+    wmove(winChat, 3, 1);
+    wattron(winChat, COLOR_PAIR(color));
+    wprintw(winChat, "Erreurs : ");
     wprintw(winChat, Message);
     wattroff(winChat, COLOR_PAIR(color));
     wrefresh(winChat);
@@ -221,6 +230,7 @@ void affichage_maj_capture (void){
     phrase[0] = '0' + plat.nbChevreCapture;
     phrase[1] = '\0';
     affichage_print_in_middle(winCapture, 3, 0, 40, phrase, 0);
+    wrefresh(winCapture);
 }
 
 void affichage_maj_Hist_etape (Coup* c, int ligne){
