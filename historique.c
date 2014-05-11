@@ -11,7 +11,7 @@ void historique_init (Historique* h){
     h->nbCoups = 0;
 }
 
-Coup *historique_coup_init (Mvt m, int tigre, int chevre_mange, int placement_chevre, int phase){
+Coup *historique_init_coup (Mvt m, int tigre, int chevre_mange, int placement_chevre, int phase){
     Coup *c = malloc(sizeof(Coup));
     c->next = NULL;
     c->mvt = m;

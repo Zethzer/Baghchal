@@ -25,6 +25,20 @@ int gestionPions_sommeImpair(Pos p){
 	return((p.x+p.y)%2);
 }
 
+Pos gestionPions_initPos (int x, int y){
+    Pos p;
+    p.x = x;
+    p.y = y;
+    return p;
+}
+
+Mvt gestionPions_initMvt (int xdeb, int ydeb, int xfin, int yfin){
+    Mvt m;
+    m.deb = gestionPions_initPos(xdeb, ydeb);
+    m.fin = gestionPions_initPos(xfin, yfin);
+    return m;
+}
+
 Pos gestionPions_multPosSca(int v, Pos p){
 	Pos position;
 
