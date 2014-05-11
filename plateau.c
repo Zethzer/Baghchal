@@ -7,6 +7,7 @@
 #include "save.h"
 
 extern Plateau plat;
+extern WINDOW *winRest;
 
 void plateau_init(){
 
@@ -16,6 +17,7 @@ void plateau_init(){
 	plat.nbChevreCapture=0;
 	plat.tourJoueur=0;
 	plat.phaseJeu=0;
+	plat.coupJoue=0;
 
 	plat.plateau[0][0].pion='T';
 	plat.plateau[0][4].pion='T';
@@ -41,6 +43,7 @@ void plateau_ajouterChevre(Pos p){
 	plat.plateau[p.x][p.y].pion='C';
 	plat.nbChevresHorsPlateau--;
 	plat.nbChevresSurPlateau++;
+	affichage_maj_rest();
 }
 
 bool plateau_cliquezAnnulerCoup(Pos p){
@@ -54,7 +57,7 @@ bool plateau_cliquezFinTour(Pos p){
 }
 
 int plateau_verifierMenu(Pos p){
-	char nomFichierSauv[75];
+	char nomFichierSauv[100];
 
 	if(p.x >= 0 && p.y >= 0 && p.x <= 14 && p.y <= 3)
 		return(1);
@@ -75,152 +78,144 @@ int plateau_verifierMenu(Pos p){
 int plateau_clic2case (Pos pIn, Pos *pOut){
     pIn.x -= ((COLS-49)/2)+2;
     pIn.y -= ((LINES-25)/2)+1;
-    if ((pIn.x%10 <=4) && (pIn.x%10 >=0) && (pIn.y%5 <= 2) && (pIn.y >=0)){
+    wmove(winRest, 3, 4);
+    wprintw(winRest, "%d %d", pIn.x, pIn.y);
+    wrefresh(winRest);
+    if ((pIn.x%10 <=4) && (pIn.x%10 >= 0) && (pIn.y%5 <= 2) && (pIn.y%5 >=0) && (pIn.x <= 50) && (pIn.y <= 25)){
         pOut->x = pIn.x /10;
         pOut->y = pIn.y / 5;
+    wmove(winRest, 4, 4);
+    wprintw(winRest, "%d %d", pOut->x, pOut->y);
+    wrefresh(winRest);
         return(1);
     }else
         return(0);
 }
 
-int plateau_clicAnnulerFinirTour(Historique h, Pos pSourisDep){
+int plateau_clicAnnulerFinirTour(Historique* h, Pos pSourisDep){
 
 	if(plateau_cliquezAnnulerCoup(pSourisDep)){
-		historique_annuler_coup(&h);
+		historique_annuler_coup(h);
 		return(0);
 	}
-	else
-		affichage_message("Vous devez jouer avant d'annuler votre coup.",4);
-	if(plateau_cliquezFinTour(pSourisDep))
+	if(plateau_cliquezFinTour(pSourisDep)){
+		plat.tourJoueur=!(plat.tourJoueur);
+		plat.coupJoue=0;
 		return(1);
-	else
-		affichage_message("Vous devez jouer avant de finir votre tour.",4);
+	}
 	return(0);
 }
 
-Mvt plateau_deplacementPion(int tourJoueur, Pos pSourisDep, Historique h){
-	Mvt m;
-	Pos pSouris, pSourisArrive, pMilieu;
+int plateau_deplacementPion(Pos pSourisDep, Mvt* m, Historique *h){
+	Pos pMilieu, pSourisArrive, pPlat;
 
-	m.deb=pSourisDep;
-	if(!tourJoueur)
-		while(!gestionPions_estChevre(pSourisDep)){
+	m->deb=pSourisDep;
+	if(!plat.tourJoueur){
+		if(!gestionPions_estChevre(pSourisDep)){
 			affichage_message("Ce n'est pas une chevre.",4);
-			evenement_recupererEvenement(h,&pSouris);
-			m.deb=pSouris;
+			return(1);
 		}
-	else
-		while(!gestionPions_estTigre(pSourisDep)){
-			affichage_message("Ce n'est pas un tigre.",4);
-			evenement_recupererEvenement(h,&pSouris);
-			m.deb=pSouris;
-		}
-	evenement_recupererEvenement(h,&pSouris);
-	m.fin=pSourisArrive;
-	while(!gestionPions_DepValide(m)){
-		affichage_message("Deplacement non valide ! Recommencez.",4);
-		evenement_recupererEvenement(h,&pSouris);
-		evenement_recupererEvenement(h,&pSouris);
-		m.deb=pSouris;
-		m.fin=pSourisArrive;
 	}
-	plateau_deplacement(m.deb,m.fin);
-	if(gestionPions_estTigre(m.deb) && gestionPions_estChevre((pMilieu=gestionPions_posMilieu(m.deb,m.fin)))){
+	else{
+		if(!gestionPions_estTigre(pSourisDep)){
+			affichage_message("Ce n'est pas un tigre.",4);
+			return(1);
+		}
+	}
+	affichage_message("Choisissez la destination.",5);
+	evenement_recupererEvenement(h,&pSourisArrive);
+	if(plateau_clic2case(pSourisArrive,&pPlat))
+		m->fin=pPlat;
+	if(!gestionPions_DepValide(*m)){
+		affichage_message("Deplacement non valide ! Recommencez.",4);
+		return(1);
+	}
+	plateau_deplacement(m->deb,m->fin);
+	if(gestionPions_estTigre(m->deb) && gestionPions_estChevre((pMilieu=gestionPions_posMilieu(m->deb,m->fin)))){
 		plat.nbChevreCapture++;
 		plat.plateau[pMilieu.x][pMilieu.y].pion='.';
 	}
 	
-	return(m);
+	return(0);
 }
 
-void plateau_placementPion(Pos pSourisDep, Historique h){
-	Pos pSouris;
+void plateau_placementPion(Pos pSourisDep, Historique* h){
 	Coup* c;
 	Mvt m;
 
-	while(!gestionPions_estChevre(pSourisDep)){
-		affichage_message("Ce n'est pas une chevre.",4);
-		evenement_recupererEvenement(h,&pSouris);
-	}
-	while(!gestionPions_estVide(pSourisDep)){
+	if(!gestionPions_estVide(pSourisDep))
 		affichage_message("Placement non valide ! La case doit etre vide.",4);
-		evenement_recupererEvenement(h,&pSouris);
+	else{
+		plateau_ajouterChevre(pSourisDep);
+		m.deb.x=5;
+		m.deb.y=4;
+		m.fin=pSourisDep;
+		c=historique_init_coup(m, 0, 0, 1, plat.phaseJeu, plat.tourJoueur);
+		historique_ajouter_coup(h,c);
 	}
-	plateau_ajouterChevre(pSouris);
-	m.deb.x=5;
-	m.deb.y=4;
-	m.fin=pSouris;
-	c=historique_init_coup(m, 0, 0, 1, plat.phaseJeu);
-	historique_ajouter_coup(&h,c);
 }
 
-int plateau_gestionTour(Historique h){
+int plateau_gestionTour(Historique* h, Pos pEvent){
 	Mvt m;
 	Coup *c;
 	int codeRetour, codeBouton;
-	bool finTour = false, coupJoue = false;
-	Pos pEvent, pPlat;
+	Pos pPlat;
 
-	while(!finTour)
-		if(!plat.tourJoueur){ // Chèvre
-			if(!evenement_recupererEvenement(h,&pEvent))
-				;
-			else
-				if(!plat.phaseJeu){ // Placement
-					if((codeRetour=plateau_verifierMenu(pEvent)) != 1 && codeRetour)
-						return(codeRetour);
-					else if(plateau_clic2case(pEvent,&pPlat)){
-						if(!coupJoue){
-							plateau_placementPion(pPlat,h);
-							coupJoue=true;
-						}
-						else
-							affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.",4);
-					}
-					if(coupJoue && (codeBouton=plateau_clicAnnulerFinirTour(h,pEvent)))
-						finTour=true;
-					else
-						coupJoue=false;
+	if(!plat.tourJoueur){ // Chèvre
+		wmove(winRest,2,5);
+		wprintw(winRest,"y=%d x=%d",pEvent.y,pEvent.x);
+		wrefresh(winRest);
+		if((codeRetour=plateau_verifierMenu(pEvent)) != 1 && codeRetour)
+			return(codeRetour);
+		if(!plat.phaseJeu){ // Placement
+			if(plateau_clic2case(pEvent,&pPlat)){
+				if(!plat.coupJoue){
+					plateau_placementPion(pPlat,h);
+					plat.coupJoue=1;
 				}
-				else{ // Déplacement
-					if((codeRetour=plateau_verifierMenu(pEvent)) != 1 && codeRetour)
-						return(codeRetour);
-					else if(plateau_clic2case(pEvent, &pPlat)){
-						if(!coupJoue){
-							m=plateau_deplacementPion(plat.tourJoueur, pPlat, h);
-							c=historique_init_coup(m, 0, 0, 0, 2);
-							historique_ajouter_coup(&h,c);
-							coupJoue=true;
-						}
-						else
-							affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.",4);
-					}
-					if(coupJoue && (codeBouton=plateau_clicAnnulerFinirTour(h,pEvent)))
-						finTour=true;
-					else
-						coupJoue=false;
-				}
+				else
+					affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.",4);
+			}
+			if((codeBouton=plateau_clicAnnulerFinirTour(h,pEvent)))
+				return(0);
 		}
-		else{ // Tigre
-			if(!evenement_recupererEvenement(h,&pEvent))
-				;
-			else
-				if((codeRetour=plateau_verifierMenu(pEvent)) != 1 && codeRetour)
-					return(codeRetour);
-				else if(plateau_clic2case(pEvent, &pPlat)){
-					if(!coupJoue){
-						m=plateau_deplacementPion(plat.tourJoueur, pPlat, h);
-						c=historique_init_coup(m, 1, gestionPions_estSaut(m), 0, 2);
-						historique_ajouter_coup(&h,c);
-						coupJoue=true;
+		else{ // Déplacement
+			if(plateau_clic2case(pEvent, &pPlat)){
+				if(!plat.coupJoue){
+					if(plateau_deplacementPion(pPlat, &m, h))
+						return(3);
+					else{
+						c=historique_init_coup(m, 1, gestionPions_estSaut(m), 0, 2, plat.tourJoueur);
+						historique_ajouter_coup(h,c);
+						plat.coupJoue=1;
 					}
-					else
-						affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.",4);
 				}
-				if(coupJoue && (codeBouton=plateau_clicAnnulerFinirTour(h,pEvent)))
-						finTour=true;
-					else
-						coupJoue=false;
+				else
+					affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.",4);
+			}
+			if((codeBouton=plateau_clicAnnulerFinirTour(h,pEvent)))
+				return(0);
 		}
-	return 0;
+	}
+	else{ // Tigre
+		if((codeRetour=plateau_verifierMenu(pEvent)) != 1 && codeRetour)
+			return(codeRetour);
+		else if(plateau_clic2case(pEvent, &pPlat)){
+			if(!plat.coupJoue){
+				if(plateau_deplacementPion(pPlat, &m, h))
+					return(3);
+				else{
+					c=historique_init_coup(m, 1, gestionPions_estSaut(m), 0, 2, plat.tourJoueur);
+					historique_ajouter_coup(h,c);
+					plat.coupJoue=true;
+				}
+			}
+			else
+				affichage_message("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.",4);
+		}
+		if((codeBouton=plateau_clicAnnulerFinirTour(h,pEvent)))
+			return(0);
+	}
+
+	return(0);
 }

@@ -17,6 +17,7 @@ typedef struct plat_s{
 	int nbChevreCapture;
 	int tourJoueur;
 	int phaseJeu;
+	int coupJoue;
 } Plateau;
 
 void plateau_init();
@@ -31,13 +32,13 @@ bool plateau_cliquezFinTour(Pos p);
 
 int clic2case (Pos pIn, Pos *pOut);
 
-int plateau_clicAnnulerFinirTour(Historique h, Pos pSourisDep);
+int plateau_clicAnnulerFinirTour(Historique* h, Pos pSourisDep);
 
-Mvt plateau_deplacementPion(int tourJoueur, Pos pSourisDep, Historique h);
+int plateau_deplacementPion(Pos pSourisDep, Mvt* m, Historique *h);
 
-void plateau_placementPion(Pos pSourisDep, Historique h);
+void plateau_placementPion(Pos pSourisDep, Historique* h);
 
-int plateau_gestionTour(Historique h);
+int plateau_gestionTour(Historique* h, Pos pEvent);
 
 #endif
 

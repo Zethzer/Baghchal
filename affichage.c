@@ -213,6 +213,7 @@ void affichage_maj_rest (void){
     phrase[2] = '\0';
     strcat(phrase, " chevres");
     affichage_print_in_middle(winRest, 9, 0, (COLS/2)-31, phrase, 0);
+    wrefresh(winRest);
 }
 
 void affichage_maj_capture (void){
@@ -235,6 +236,13 @@ void affichage_maj_Hist (Historique h){
     affichage_init_historique();
     historique_map(h, affichage_maj_Hist_etape);
     wrefresh(winHist);
+}
+
+void affichage_maj_all (Historique h){
+    affichage_maj_plateau();
+    affichage_maj_rest();
+    affichage_maj_capture();
+    affichage_maj_Hist(h);
 }
 
 void affichage_scrollup_hist (Historique* h){

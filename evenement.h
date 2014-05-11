@@ -4,6 +4,6 @@
 #include "gestionPions.h"
 #include "historique.h"
 
-int evenement_recupererEvenement(Historique h, Pos* pEvent);
+int evenement_recupererEvenement(Historique* h, Pos* pEvent);
 
 #endif

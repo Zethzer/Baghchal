@@ -90,14 +90,21 @@ void historique_map (Historique h, fonctionCoup f){
 
 void historique_annuler_coup (Historique* h){
     Coup* dernier = historique_dernier_coup(*h);
-    if (dernier->placement_chevre)
-        plat.plateau[dernier->mvt.fin.x][dernier->mvt.fin.y].pion = '.';
-    else
-        plateau_deplacement(dernier->mvt.fin, dernier->mvt.deb);
-    if (dernier->chevre_mange)
-        plateau_ajouterChevre(gestionPions_posMilieu(dernier->mvt.fin, dernier->mvt.deb));
-    if (dernier->phase != plat.phaseJeu)
-        plat.phaseJeu = 0;
-    plat.tourJoueur = dernier->joueur;
-    historique_suppr_dernier_coup(h);
+    if(dernier){
+        if (dernier->placement_chevre){
+            plat.plateau[dernier->mvt.fin.x][dernier->mvt.fin.y].pion = '.';
+            ++plat.nbChevresHorsPlateau;
+        }
+        else
+            plateau_deplacement(dernier->mvt.fin, dernier->mvt.deb);
+        if (dernier->chevre_mange){
+            plateau_ajouterChevre(gestionPions_posMilieu(dernier->mvt.fin, dernier->mvt.deb));
+            --plat.nbChevreCapture;
+        }
+        if (dernier->phase != plat.phaseJeu)
+            plat.phaseJeu = 0;
+        plat.tourJoueur = dernier->joueur;
+        plat.coupJoue=0;
+        historique_suppr_dernier_coup(h);
+    }
 }
