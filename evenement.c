@@ -23,13 +23,15 @@ int evenement_recupererEvenement(Historique h, Pos* pEvent){
 			}
 		break;
 		case KEY_UP:
-			affichage_scrolldown_hist(h);
+			affichage_scrolldown_hist(&h);
 			return(0);
 		break;
 		case KEY_DOWN:
-			affichage_scrollup_hist(h);
+			affichage_scrollup_hist(&h);
 			return(0);
 		break;
 	}
+
+	return(0);
 }
 
