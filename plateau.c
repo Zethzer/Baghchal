@@ -243,17 +243,19 @@ int plateau_gestionTour(Historique* h, Pos pEvent){
 void plateau_gestionVainqueur(Historique* h, int v){
 	int codeRetour;
 	char nomFichierChar[100];
+	WINDOW *winWin;
 	Pos pMenu;
 
 	if(v == 1)
-		affichage_message_victoire(1);
+		winWin=affichage_message_victoire(1);
 	else
-		affichage_message_victoire(0);
+		winWin=affichage_message_victoire(0);
 
 	do{
 		evenement_recupererEvenement(h,&pMenu);
 		codeRetour=plateau_verifierMenu(pMenu);
 		if(codeRetour == 1){
+			wclear(winWin);
 			init(h);
 		}
 		else if(codeRetour == 2){
