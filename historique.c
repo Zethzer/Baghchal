@@ -5,8 +5,10 @@
 
 extern Plateau plat;
 
-void historique_init (Historique h){
-    h.first = NULL;
+void historique_init (Historique* h){
+    h->first = NULL;
+    h->premierAffiche = 0;
+    h->nbCoups = 0;
 }
 
 Coup *historique_coup_init (Mvt m, int tigre, int chevre_mange, int placement_chevre, int phase){
@@ -30,8 +32,8 @@ void historique_detruire_hist (Coup* first){
     historique_free_coup (first);
 }
 
-void historique_ajouter_coup (Historique h, Coup* c){
-    Coup* current = h.first;
+void historique_ajouter_coup (Historique* h, Coup* c){
+    Coup* current = h->first;
     Coup* pred = NULL;
     while (current){
         current = current->next;
@@ -39,11 +41,14 @@ void historique_ajouter_coup (Historique h, Coup* c){
     if (pred)
         pred->next = c;
     else
-        h.first = c;
+        h->first = c;
+    ++h->nbCoups;
+    if (h->nbCoups > 21)
+        ++h->premierAffiche;
 }
 
-int historique_suppr_dernier_coup (Historique h){
-    Coup* current = h.first;
+int historique_suppr_dernier_coup (Historique* h){
+    Coup* current = h->first;
     Coup* pred = NULL;
     if (!current)
         return 1;
@@ -53,7 +58,7 @@ int historique_suppr_dernier_coup (Historique h){
     if (pred)
         pred->next = NULL;
     else
-        h.first = NULL;
+        h->first = NULL;
     historique_free_coup(current);
     return 0;
 }
@@ -70,16 +75,17 @@ Coup *historique_dernier_coup (Historique h){
 
 void historique_map (Historique h, fonctionCoup f){
     Coup* current = h.first;
-    int ligne = 2;
+    int ligne = 0;
     while (current){
-        f(current, ligne);
+        if (ligne >= h.premierAffiche && ligne-h.premierAffiche <= 21)
+            f(current, ligne);
         current = current->next;
-        ligne += 2;
+        ++ligne;
     }
 }
 
-void historique_annuler_coup (Historique h){
-    Coup* dernier = historique_dernier_coup(h);
+void historique_annuler_coup (Historique* h){
+    Coup* dernier = historique_dernier_coup(*h);
     if (dernier->placement_chevre)
         plat.plateau[dernier->mvt.fin.x][dernier->mvt.fin.y].pion = '.';
     else

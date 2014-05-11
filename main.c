@@ -7,6 +7,8 @@
 
 Plateau plat;
 
+extern WINDOW *winHist;
+
 /*void init(char* nomJoueurC, char* nomJoueurT){
     if(affichage_menu())
         affichage_initJoueurs(nomJoueurC, nomJoueurT);
@@ -37,10 +39,16 @@ int main(void){
     plateau_ajouterChevre(p);
     affichage_maj_plateau_case(p);
     
+    //Modif Historique
+    for (int i=0; i<22; ++i)
+        affichage_maj_Hist_etape (NULL, i);
+    wrefresh(winHist);
+    
     //attente
     while((ch = getch()) != KEY_F(1)){
         
     }
+    
     endwin();
 }
 

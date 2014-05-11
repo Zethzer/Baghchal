@@ -65,6 +65,28 @@ int plateau_verifierMenu(Pos p){
 	return(0);
 }
 
+int clic2case (Pos pIn, Pos *pOut){
+    pIn.x -= ((COLS-49)/2)+2;
+    pIn.y -= ((LINES-25)/2)+1;
+    if ((pIn.x%10 <=4) && (pIn.x%10 >=0) && (pIn.y%5 <= 2) && (pIn.y >=0)){
+        pOut->x = pIn.x /10;
+        pOut->y = pIn.y / 5;
+        return 1;
+    }else
+        return 0;
+}
+
+int plateau_gestionTour (Historique h){
+    return 0;
+}
+
+
+
+
+
+
+
+/*
 int plateau_gestionTour(Historique h){
 	Mvt m;
 	Coup *c;
@@ -218,4 +240,4 @@ int plateau_gestionTour(Historique h){
 			}
     return 0;
 }
-
+*/

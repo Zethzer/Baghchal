@@ -219,16 +219,44 @@ void affichage_maj_capture (void){
 }
 
 void affichage_maj_Hist_etape (Coup* c, int ligne){
-    wmove(winHist, ligne, 1);
-    if (c->placement_chevre)
+    wmove(winHist, ligne+2, 1);
+    wprintw(winHist, "Plop");
+    /*if (c->placement_chevre)
         wprintw(winHist, "Chevre : placement : en (%d,%d)", c->mvt.fin.x, c->mvt.fin.y);
     else
-        wprintw(winHist, "%s : %s : de (%d,%d) a (%d,%d)", c->tigre?"Tigre":"Chevre",c->chevre_mange?"mange":"deplacement", c->mvt.deb.x, c->mvt.deb.y, c->mvt.fin.x, c->mvt.fin.y);
+        wprintw(winHist, "%s : %s : de (%d,%d) a (%d,%d)", c->tigre?"Tigre":"Chevre",c->chevre_mange?"mange":"deplacement", c->mvt.deb.x, c->mvt.deb.y, c->mvt.fin.x, c->mvt.fin.y);*/
 }
 
-void affichage_maj_Hist (void){
-    
+void affichage_maj_Hist (Historique h){
+    historique_map(h, affichage_maj_Hist_etape);
 }
+
+void affichage_scrollup_hist (Historique* h){
+    if(h->premierAffiche){
+        --h->premierAffiche;
+        affichage_maj_Hist (*h);
+    }
+}
+
+void affichage_scrolldown_hist (Historique* h){
+    if(h->nbCoups - h->premierAffiche < 22){
+        ++h->premierAffiche;
+        affichage_maj_Hist (*h);
+    }
+}
+
+char* affichage_boiteDialogue(int load){
+    char str[20];
+    WINDOW *winDiag = create_newwin(7, 50, (LINES-7)/2, (COLS-50)/2);
+    wbkgd (winDiag, COLOR_PAIR(1));
+    wmove (winDiag, 1, 1);
+    wprintw (winDiag, "%s", load?"Chargement":"Sauvegarde");
+    affichage_print_in_middle(winDiag, 3, 0, 50, "Entrer le nom du fichier de sauvegarde : ", 0);
+    getnstr(str, 19);
+    return str;
+}
+
+
 
 
 
