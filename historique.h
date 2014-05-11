@@ -10,6 +10,7 @@ typedef struct coup_s{
     int placement_chevre;
     int phase;
     int joueur;
+    struct coup_s* pred;
     struct coup_s* next;
 }Coup;
 

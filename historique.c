@@ -15,6 +15,7 @@ void historique_init (Historique* h){
 Coup *historique_init_coup (Mvt m, int tigre, int chevre_mange, int placement_chevre, int phase, int joueur){
     Coup *c = malloc(sizeof(Coup));
     c->next = NULL;
+    c->pred = NULL;
     c->mvt = m;
     c->tigre = tigre;
     c->chevre_mange = chevre_mange;
@@ -45,24 +46,21 @@ void historique_ajouter_coup (Historique* h, Coup* c){
         pred->next = c;
     else
         h->first = c;
+    c->pred = pred;
     ++h->nbCoups;
     if (h->nbCoups > 22)
         ++h->premierAffiche;
 }
 
 int historique_suppr_dernier_coup (Historique* h){
-    Coup* current = h->first;
-    Coup* pred = NULL;
-    if (!current)
+    Coup* dernier = historique_dernier_coup(*h);
+    if (!dernier)
         return 1;
-    while (current->next){
-        current = current->next;
-    }
-    if (pred)
-        pred->next = NULL;
+    if (dernier->pred)
+        dernier->pred->next = NULL;
     else
         h->first = NULL;
-    historique_free_coup(current);
+    historique_free_coup(dernier);
     return 0;
 }
 
