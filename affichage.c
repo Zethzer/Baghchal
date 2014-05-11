@@ -58,6 +58,8 @@ WINDOW *affichage_init_case_capture (void){
 WINDOW *affichage_init_historique (void){
     winHist = create_newwin(25, 40, 15, 5);
     affichage_print_in_middle(winHist, 0, 0, 40, " Historique ", COLOR_PAIR(1));
+    wmove(winHist, 1,1);
+    wprintw(winHist, "UP/DOWN pour scroll");
     wnoutrefresh(winHist);
     return winHist;
 }
@@ -286,30 +288,3 @@ WINDOW* affichage_message_victoire(int tigre){
     wrefresh(winWin);
     return(winWin);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
