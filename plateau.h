@@ -31,5 +31,7 @@ bool plateau_cliquezFinTour(Pos p);
 
 int plateau_gestionTour(Historique h);
 
+int clic2case (Pos pIn, Pos *pOut);
+
 #endif
 
