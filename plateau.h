@@ -29,9 +29,11 @@ bool plateau_cliquezAnnulerCoup(Pos p);
 
 bool plateau_cliquezFinTour(Pos p);
 
-int plateau_gestionTour(Historique h);
-
 int clic2case (Pos pIn, Pos *pOut);
+
+Mvt plateau_deplacementPion(int tourJoueur, Pos pSourisDep);
+
+int plateau_gestionTour(Historique h);
 
 #endif
 
