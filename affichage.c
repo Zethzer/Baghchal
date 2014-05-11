@@ -96,7 +96,7 @@ WINDOW *affichage_init_plateau (void){
 WINDOW *affichage_init_FinTour (void){
     WINDOW *winFinTour = create_newwin(7, ((COLS/2)-33)/2, (LINES/2)+6, (COLS/2)+28);
     wbkgd(winFinTour, COLOR_PAIR(2));
-    affichage_print_in_middle(winFinTour, 3, 0, ((COLS/2)-33)/2, "Fin de Tour", COLOR_PAIR(1));
+    affichage_print_in_middle(winFinTour, 3, 0, ((COLS/2)-33)/2, "Fin de Tour", COLOR_PAIR(2));
     wnoutrefresh(winFinTour);
     return winFinTour;
 }
@@ -104,7 +104,7 @@ WINDOW *affichage_init_FinTour (void){
 WINDOW *affichage_init_Annuler (void){
     WINDOW *winAnnuler = create_newwin(7, ((COLS/2)-33)/2, (LINES/2)+6, +(3*COLS/4)+13);
     wbkgd(winAnnuler, COLOR_PAIR(3));
-    affichage_print_in_middle(winAnnuler, 3, 0, ((COLS/2)-33)/2, "Annuler", COLOR_PAIR(2));
+    affichage_print_in_middle(winAnnuler, 3, 0, ((COLS/2)-33)/2, "Annuler", 0);
     wnoutrefresh(winAnnuler);
     return winAnnuler;
 }
@@ -277,6 +277,14 @@ void affichage_boiteDialogue(int load, char* str){
     wgetstr(winChat, str);
 }
 
+void affichage_message_victoire(int tigre){
+    WINDOW *winWin = create_newwin(9, 60, (LINES-9)/2, (COLS-60)/2);
+    wbkgd(winWin, COLOR_PAIR(3));
+    char phrase[60] = "Victoire des ";
+    strcat(phrase, tigre?"Tigres":"Chevres");
+    affichage_print_in_middle(winWin, 4, 0, 60, 0);
+    wrefresh(winWin);
+}
 
 
 
