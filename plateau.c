@@ -38,6 +38,8 @@ void plateau_deplacement(Pos deb, Pos fin){
 
 void plateau_ajouterChevre(Pos p){
 	plat.plateau[p.x][p.y].pion='C';
+	plat.nbChevresHorsPlateau--;
+	plat.nbChevresSurPlateau++;
 }
 
 bool plateau_cliquezAnnulerCoup(Pos p){
@@ -102,23 +104,32 @@ Mvt plateau_deplacementPion(int tourJoueur, Pos pSourisDep){
 		m.deb=pSouris;
 		m.fin=pSourisArrive;
 	}
-
+	plateau_deplacement(m.deb,m.fin);
+	if(gestionPions_estTigre(m.deb) && gestionPions_estChevre(gestionPions_posMilieu(m.deb,m.fin)))
+		plat.nbChevreCapture++;
+	
 	return(m);
 }
 
-Pos plateau_placementPion(Pos pSourisDep){
+void plateau_placementPion(Pos pSourisDep, Historique h){
 	Pos pSouris;
+	Coup* c;
+	Mvt m;
 
 	while(!gestionPions_estChevre(pSourisDep)){
 		affichage_message("Ce n'est pas une chevre.",4);
 		pSouris=evenement_recupererEvenementSouris();
 	}
-	while(!gestionPions_estVide(pSourisDep) && !coupJoue){
+	while(!gestionPions_estVide(pSourisDep)){
 		affichage_message("Placement non valide ! La case doit etre vide.",4);
 		pSouris=evenement_recupererEvenementSouris();
 	}
-
-	return(pSouris);
+	plateau_ajouterChevre(pSouris);
+	m.deb.x=-1;
+	m.deb.y=-1;
+	m.fin=pSouris;
+	c=historique_init_coup(m, 0, 0, 1, plat.phaseJeu);
+	historique_ajouter_coup(&h,c);
 }
 
 int plateau_gestionTour(Historique h){
@@ -126,7 +137,7 @@ int plateau_gestionTour(Historique h){
 	Coup *c;
 	int codeRetour;
 	bool finTour = false, coupJoue = false;
-	Pos pSourisDep, pSourisArrive;
+	Pos pSourisDep;
 
 	while(!finTour)
 		if(!plat.tourJoueur){ // Chèvre
@@ -135,14 +146,8 @@ int plateau_gestionTour(Historique h){
 				if((codeRetour=plateau_verifierMenu(pSourisDep)) != 1 && codeRetour)
 					return(codeRetour);
 				else{
-					pSourisDep=plateau_placementPion(pSourisDep);
 					if(!coupJoue){
-						plateau_ajouterChevre(pSourisDep);
-						m.deb.x=-1;
-						m.deb.y=-1;
-						m.fin=pSourisDep;
-						c=historique_init_coup(m, 0, 0, 1, plat.phaseJeu);
-						historique_ajouter_coup(&h,c);
+						plateau_placementPion(pSourisDep,h);
 						coupJoue=true;
 					}
 					else
@@ -160,9 +165,8 @@ int plateau_gestionTour(Historique h){
 				if((codeRetour=plateau_verifierMenu(pSourisDep)) != 1 && codeRetour)
 					return(codeRetour);
 				else{
-					m=plateau_deplacementPion(plat.tourJoueur, pSourisDep);
 					if(!coupJoue){
-						plateau_deplacement(m.deb,m.fin);
+						m=plateau_deplacementPion(plat.tourJoueur, pSourisDep);
 						c=historique_init_coup(m, 0, 0, 0, 2);
 						historique_ajouter_coup(&h,c);
 						coupJoue=true;
@@ -178,14 +182,13 @@ int plateau_gestionTour(Historique h){
 				}
 			}
 		}
-		else{ // Tigre -- Reste à ajouter quand il saute, une chèvre est mangé
+		else{ // Tigre
 			pSourisDep=evenement_recupererEvenementSouris();
 			if((codeRetour=plateau_verifierMenu(pSourisDep)) != 1 && codeRetour)
 				return(codeRetour);
 			else{
-				m=plateau_deplacementPion(plat.tourJoueur, pSourisDep);
 				if(!coupJoue){
-					plateau_deplacement(m.deb,m.fin);
+					m=plateau_deplacementPion(plat.tourJoueur, pSourisDep);
 					c=historique_init_coup(m, 1, gestionPions_estSaut(m), 0, 2);
 					historique_ajouter_coup(&h,c);
 					coupJoue=true;

@@ -33,7 +33,7 @@ int clic2case (Pos pIn, Pos *pOut);
 
 Mvt plateau_deplacementPion(int tourJoueur, Pos pSourisDep);
 
-Pos plateau_placementPion(Pos pSourisDep);
+void plateau_placementPion(Pos pSourisDep, Historique h);
 
 int plateau_gestionTour(Historique h);
 
