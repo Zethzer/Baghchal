@@ -282,7 +282,7 @@ WINDOW* affichage_message_victoire(int tigre){
     wbkgd(winWin, COLOR_PAIR(3));
     char phrase[60] = "Victoire des ";
     strcat(phrase, tigre?"Tigres":"Chevres");
-    affichage_print_in_middle(winWin, 4, 0, 60, 0);
+    affichage_print_in_middle(winWin, 4, 0, 60, phrase, 0);
     wrefresh(winWin);
     return(winWin);
 }

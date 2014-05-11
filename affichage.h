@@ -117,8 +117,18 @@ WINDOW *affichage_init_exit (void);
  */
 void affichage_message (char* Message, int color);
 
+/*
+ E : Message et identifiant d'une paire de couleur
+ S : aucune
+ Role : Affiche un message d'Erreur d'une certaine paire de couleur dans la fenetre de chat
+ */
 void affichage_message_erreur (char* Message, int color);
 
+/*
+ E : Position dans le plateau
+ S : aucune
+ Role : Met à jour 
+ */
 void affichage_maj_plateau_case (Pos p);
 
 void affichage_maj_plateau (void);
