@@ -45,6 +45,10 @@ void affichage_maj_Hist_etape (Coup* c, int ligne);
 
 void affichage_maj_Hist (Historique h);
 
+void affichage_scrollup_hist (Historique* h);
+
+void affichage_scrolldown_hist (Historique* h);
+
 void affichage_boiteDialogue(int i, char* str);
 
 #endif

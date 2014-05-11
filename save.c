@@ -22,6 +22,9 @@ void save_export (char* nomSave){
     fprintf(fic, "\\phase %d\n", plat.phaseJeu);
     fprintf(fic, "\\captured %d", plat.nbChevreCapture);
     fclose(fic);
+    destination = "Partie Sauvegardée en tant que ";
+    strcat(destination, nomSave);
+    affichage_message(destination, 5);
 }
 
 void save_import (char* nomSave){
@@ -50,4 +53,7 @@ void save_import (char* nomSave){
             plat.nbChevreCapture = atoi(nb);
         ++lig;
     }
+    destination = "Partie Chargee depuis ";
+    strcat(destination, nomSave);
+    affichage_message(destination, 5);
 }
