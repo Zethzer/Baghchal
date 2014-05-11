@@ -7,14 +7,13 @@
 #include "save.h"
 
 extern Plateau plat;
-extern WINDOW *winRest;
+extern WINDOW *winRest, *winChat;
 
 void init(Historique* h){
+	clear();
 	plateau_init();
 	affichage_init();
 	historique_init(h);
-	keypad(stdscr, true);
-	mousemask(BUTTON1_CLICKED, NULL);
 }
 
 void plateau_init(){
@@ -233,8 +232,6 @@ int plateau_gestionTour(Historique* h, Pos pEvent){
 		}
 		if((codeBouton=plateau_clicAnnulerFinirTour(h,pEvent)))
 			return(0);
-		else
-				affichage_message_erreur("Vous devez jouer avant de finir votre tour.",2);
 	}
 
 	return(0);
@@ -246,6 +243,8 @@ void plateau_gestionVainqueur(Historique* h, int v){
 	WINDOW *winWin;
 	Pos pMenu;
 
+	wclear(winChat);
+
 	if(v == 1)
 		winWin=affichage_message_victoire(1);
 	else
@@ -255,12 +254,17 @@ void plateau_gestionVainqueur(Historique* h, int v){
 		evenement_recupererEvenement(h,&pMenu);
 		codeRetour=plateau_verifierMenu(pMenu);
 		if(codeRetour == 1){
-			wclear(winWin);
+			delwin(winWin);
 			init(h);
 		}
 		else if(codeRetour == 2){
 			affichage_boiteDialogue(1, nomFichierChar);
 			save_import(nomFichierChar);
+			delwin(winWin);
+			clear();
+			historique_init(h);
+			affichage_maj_Hist(*h);
+			affichage_init();
 		}
 	}while(codeRetour != 1 && codeRetour != 2);
 	
