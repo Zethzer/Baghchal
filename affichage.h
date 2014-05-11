@@ -2,6 +2,8 @@
 #define __AFFICHAGE_H__
 
 #include <ncurses.h>
+#include "gestionPions.h"
+#include "plateau.h"
 
 void affichage_init(void);
 

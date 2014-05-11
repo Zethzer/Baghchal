@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "affichage.h"
 #include "save.h"
 #include "plateau.h"
 
@@ -23,7 +24,7 @@ void save_export (char* nomSave){
     fprintf(fic, "\\phase %d\n", plat.phaseJeu);
     fprintf(fic, "\\captured %d", plat.nbChevreCapture);
     fclose(fic);
-    phrase = "Partie Sauvegardée en tant que ";
+    strcpy(phrase, "Partie Sauvegardee en tant que ");
     strcat(phrase, nomSave);
     affichage_message(phrase, 5);
 }
@@ -55,7 +56,7 @@ void save_import (char* nomSave){
             plat.nbChevreCapture = atoi(nb);
         ++lig;
     }
-    phrase = "Partie Chargee depuis ";
+    strcpy(phrase, "Partie Chargee depuis ");
     strcat(phrase, nomSave);
     affichage_message(phrase, 5);
 }
