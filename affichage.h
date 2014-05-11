@@ -89,10 +89,25 @@ WINDOW *affichage_init_ChevreRestante (void);
  */
 WINDOW *affichage_init_new (void);
 
+/*
+ E : aucune
+ S : aucune
+ Role : initialise la fenetre/bouton de sauvegarde
+ */
 WINDOW *affichage_init_save (void);
 
+/*
+ E : aucune
+ S : aucune
+ Role : initialise la fenetre/bouton de chargement
+ */
 WINDOW *affichage_init_load (void);
 
+/*
+ E : aucune
+ S : aucune
+ Role : initialise la fenetre/bouton de sauvegarde
+ */
 WINDOW *affichage_init_exit (void);
 
 void affichage_message (char* Message, int color);
@@ -118,5 +133,7 @@ void affichage_scrollup_hist (Historique* h);
 void affichage_scrolldown_hist (Historique* h);
 
 void affichage_boiteDialogue(int i, char* str);
+
+void affichage_message_victoire (int tigre);
 
 #endif
