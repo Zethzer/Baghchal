@@ -127,10 +127,15 @@ void affichage_message_erreur (char* Message, int color);
 /*
  E : Position dans le plateau
  S : aucune
- Role : Met à jour 
+ Role : Met à jour l'affichage de la zone correspondant à une case du tableau
  */
 void affichage_maj_plateau_case (Pos p);
 
+/*
+ E : Position dans le plateau
+ S : aucune
+ Role : Met à jour toutes les cases du plateau
+ */
 void affichage_maj_plateau (void);
 
 void affichage_maj_rest (void);

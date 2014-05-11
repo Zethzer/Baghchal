@@ -22,7 +22,9 @@ void save_export (char* nomSave){
     }
     fprintf(fic, "\\endboard\n\\player %c\n", (plat.tourJoueur)?'T':'G');
     fprintf(fic, "\\phase %d\n", plat.phaseJeu);
-    fprintf(fic, "\\captured %d", plat.nbChevreCapture);
+    fprintf(fic, "\\captured %d\n", plat.nbChevreCapture);
+    fprintf(fic, "\\restante %d\n", plat.nbChevreHorsPlateau);
+    fprintf(fic, "\\coupJoue %d", plat.coupJoue);
     fclose(fic);
     strcpy(phrase, "Partie Sauvegardee en tant que ");
     strcat(phrase, nomSave);
@@ -35,7 +37,6 @@ void save_import (char* nomSave){
     char destination[100] = "save/";
     char phrase[strlen(nomSave)+30];
     char ligne[12];
-    char nb[2];
     strcat(destination, nomSave);
     fic = fopen(destination, "r");
     while (fgets(ligne, sizeof(ligne), fic)){
@@ -46,14 +47,17 @@ void save_import (char* nomSave){
         else if (lig == 7)
             plat.tourJoueur = (ligne[8]=='T')?1:0;
         else if (lig == 8){
-            nb[0]=ligne[7];
-            nb[1]='\0';
-            plat.phaseJeu = atoi(nb);
+            plat.phaseJeu = atoi(ligne+7);
         }
-        else if (lig == 9)
-            nb[0]=ligne[10];
-            nb[1]='\0';
-            plat.nbChevreCapture = atoi(nb);
+        else if (lig == 9){
+            plat.nbChevreCapture = atoi(ligne+10);
+        }
+        else if (lig == 10){
+            plat.nbChevreHorsPlateau = atoi(ligne+10);
+        }
+        else if (lig == 11){
+            plat.coupJoue = atoi(ligne+10);
+        }
         ++lig;
     }
     strcpy(phrase, "Partie Chargee depuis ");
