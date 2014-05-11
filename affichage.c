@@ -255,7 +255,7 @@ void affichage_boiteDialogue(int load, char* str){
     affichage_message(load?"Chargement":"Sauvegarde", 5);
     affichage_print_in_middle(winChat, 3, 0, 50, "Entrer le nom du fichier de sauvegarde : ", 0);
     wrefresh(winChat);
-    wmove(winChat, 5, 4);
+    wmove(winChat, 4, 4);
     wgetstr(winChat, str);
 }
 
