@@ -10,7 +10,7 @@ typedef struct cell_s{
 } Cell;
 
 typedef struct plat_s{
-	Cell plateau[5][5];
+	Cell plateau[6][5];
 	int nbTigres;
 	int nbChevresSurPlateau;
 	int nbChevresHorsPlateau;
@@ -30,6 +30,8 @@ bool plateau_cliquezAnnulerCoup(Pos p);
 bool plateau_cliquezFinTour(Pos p);
 
 int clic2case (Pos pIn, Pos *pOut);
+
+int plateau_clicAnnulerFinirTour(Historique h, Pos pSourisDep);
 
 Mvt plateau_deplacementPion(int tourJoueur, Pos pSourisDep);
 
