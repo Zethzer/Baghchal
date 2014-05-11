@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ncurses.h>
 #include "historique.h"
 #include "plateau.h"
 
@@ -36,6 +37,7 @@ void historique_ajouter_coup (Historique* h, Coup* c){
     Coup* current = h->first;
     Coup* pred = NULL;
     while (current){
+        pred = current;
         current = current->next;
     }
     if (pred)
@@ -43,7 +45,7 @@ void historique_ajouter_coup (Historique* h, Coup* c){
     else
         h->first = c;
     ++h->nbCoups;
-    if (h->nbCoups > 21)
+    if (h->nbCoups > 22)
         ++h->premierAffiche;
 }
 
@@ -77,8 +79,9 @@ void historique_map (Historique h, fonctionCoup f){
     Coup* current = h.first;
     int ligne = 0;
     while (current){
-        if (ligne >= h.premierAffiche && ligne-h.premierAffiche <= 21)
-            f(current, ligne);
+        if (ligne >= h.premierAffiche && (ligne-h.premierAffiche) <= 21){
+            f(current, ligne-h.premierAffiche);
+        }
         current = current->next;
         ++ligne;
     }
