@@ -7,8 +7,6 @@
 int evenement_recupererEvenement(Historique* h, Pos* pEvent){
 	int c;
 	MEVENT event;
-	pEvent->x=0;
-	pEvent->y=0;
 
 	keypad(stdscr, true);
 	mousemask(ALL_MOUSE_EVENTS, NULL);
