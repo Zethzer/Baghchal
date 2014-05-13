@@ -26,6 +26,16 @@ Pos rechercheVainqueur_positionSuivanteImpaire(Pos p);
  */
 bool rechercheVainqueur_chevreCapture(int nbChevreCapture);
 
+
+/* E : Position d'une case vide et une position offset
+ * S : Retourne :
+ *		FAUX : La case vide à la position p à un tigre à pOffset
+ *		VRAI : La case vide à la position p à pas de tigre à pOffset
+ * Rôle : Vérifie si la case vide à la position p est entouré d'un tigre à
+ * la position p+pOffset
+ */
+bool rechercheVainqueur_testDepChevre(Pos p, Pos pOffset);
+
 /* E : T
  * S : Retourne :
  *		FAUX : Aucune chèvre ne peut se déplacer
@@ -33,6 +43,15 @@ bool rechercheVainqueur_chevreCapture(int nbChevreCapture);
  * Rôle : Vérifie si au moins une chèvre peut se déplacer.
  */
 bool rechercheVainqueur_depChevre();
+
+/* E : Position d'un tigre et une position offset
+ * S : Retourne :
+ *		FAUX : Le tigre à la position posT n'a pas une case vide à p
+ *		VRAI : Le tigre à la position posT a une case vide à p
+ * Rôle : Vérifie si le tigre à la position posT à une case vide à la position
+ * p+pOffset
+ */
+bool rechercheVainqueur_testDepTigre(Pos posT, Pos p);
 
 /* E : Position d'un tigre
  * S : Retourne :

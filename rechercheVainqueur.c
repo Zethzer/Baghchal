@@ -70,7 +70,7 @@ bool rechercheVainqueur_chevreCapture(int nbChevreCapture){
 	return(nbChevreCapture == 7);
 }
 
-bool rechercheVainqueur_testDepChevre(){
+bool rechercheVainqueur_testDepChevre(Pos p, Pos pOffset){
 	return(gestionPions_estDansPlateau(gestionPions_addPos(p,pOffset)) && !gestionPions_estTigre(gestionPions_addPos(p,pOffset))));
 }
 
@@ -85,13 +85,13 @@ bool rechercheVainqueur_depChevre(){
 			p.y=j;
 			if(gestionPions_estVide(p) && gestionPions_sommeImpair(p))
 				for(int i=0;i < 4;++i){
-					if(rechercheVainqueur_testDepChevre())
+					if(rechercheVainqueur_testDepChevre(p,pOffset))
 						return(true);
 					p=rechercheVainqueur_positionSuivantePaire(p);
 				}
 			else if(gestionPions_estVide(p) && !gestionPions_sommeImpair(p))
 				for(int i=0;i < 8;++i){
-					if(rechercheVainqueur_testDepChevre())
+					if(rechercheVainqueur_testDepChevre(p,pOffset))
 						return(true);
 					p=rechercheVainqueur_positionSuivanteImpaire(p);
 				}
