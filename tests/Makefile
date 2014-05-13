@@ -1,6 +1,6 @@
 .PHONY:all
 
-TARGETS=test_u_gestionPions test_gestionPions
+TARGETS=test_u_gestionPions test_gestionPions test_u_rechercheVainqueur test_rechercheVainqueur
 
 all: $(TARGETS)
 
@@ -20,4 +20,10 @@ test_u_gestionPions: test_u_gestionPions.o gestionPions.o plateau.o affichage.o 
 	$(CC) $(CFLAGS) $^ -o $@ $(CLIBRARY)
 
 test_gestionPions: test_gestionPions.o gestionPions.o plateau.o affichage.o save.o historique.o evenement.o
+	$(CC) $(CFLAGS) $^ -o $@ $(CLIBRARY)
+
+test_u_rechercheVainqueur: test_u_rechercheVainqueur.o gestionPions.o plateau.o affichage.o save.o historique.o evenement.o rechercheVainqueur.o
+	$(CC) $(CFLAGS) $^ -o $@ $(CLIBRARY)
+
+test_rechercheVainqueur: test_rechercheVainqueur.o gestionPions.o plateau.o affichage.o save.o historique.o evenement.o rechercheVainqueur.o
 	$(CC) $(CFLAGS) $^ -o $@ $(CLIBRARY)

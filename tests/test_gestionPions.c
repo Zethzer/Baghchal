@@ -112,7 +112,7 @@ int main(void){
 	if(!gestionPions_estSaut(m))
 		++testsOK;
 
-	printf("\t%d tests sur 15 réussis.\n",testsOK);
+	printf("\t%d tests réussis sur 15.\n",testsOK);
 
 	return 0;
 }
