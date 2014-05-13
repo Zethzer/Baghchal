@@ -19,9 +19,9 @@ Pos rechercheVainqueur_positionSuivantePaire(Pos p){
 		p.x=0;
 		p.y=1;
 	}
-	else{
-		p.x=0;
-		p.y=1;
+	else if(p.x == 0 && p.y == 1){
+		p.x=1;
+		p.y=0;
 	}
 
 	return(position);
@@ -48,19 +48,19 @@ Pos rechercheVainqueur_positionSuivanteImpaire(Pos p){
 	}
 	else if(p.x == -1 && p.y == 0){
 		p.x=-1;
-		p.y=0;
-	}
-	else if(p.x == -1 && p.y == 1){
-		p.x=-1;
 		p.y=1;
 	}
-	else if(p.x == 0 && p.y == 1){
+	else if(p.x == -1 && p.y == 1){
 		p.x=0;
 		p.y=1;
 	}
-	else{
+	else if(p.x == 0 && p.y == 1){
 		p.x=1;
 		p.y=1;
+	}
+	else if(p.x == 1 && p.y == 1){
+		p.x=1;
+		p.y=0;
 	}
 
 	return(position);
@@ -85,7 +85,7 @@ bool rechercheVainqueur_depChevre(){
 						return(true);
 					p=rechercheVainqueur_positionSuivantePaire(p);
 				}
-			else if(gestionPions_estVide(p))
+			else if(gestionPions_estVide(p) && !gestionPions_sommeImpair(p))
 				for(int i=0;i < 8;++i){
 					if(gestionPions_estDansPlateau(gestionPions_addPos(p,pOffset)) && !gestionPions_estTigre(gestionPions_addPos(p,pOffset)))
 						return(true);
@@ -105,7 +105,10 @@ bool rechercheVainqueur_depTigre(Pos posT){
 		for(int i=0;i < 4;++i){
 			if(gestionPions_estDansPlateau(gestionPions_addPos(posT,p)) && gestionPions_estVide(gestionPions_addPos(posT,p)))
 				return(true);
-			else if(gestionPions_estChevre(gestionPions_addPos(posT,p)) && gestionPions_estVide(gestionPions_addPos(posT,gestionPions_multPosSca(2,p))))
+			else if(gestionPions_estDansPlateau(gestionPions_addPos(posT,p))
+					&& gestionPions_estDansPlateau(gestionPions_addPos(posT,gestionPions_multPosSca(2,p)))
+					&& gestionPions_estChevre(gestionPions_addPos(posT,p))
+					&& gestionPions_estVide(gestionPions_addPos(posT,gestionPions_multPosSca(2,p))))
 				return(true);
 			p=rechercheVainqueur_positionSuivantePaire(p);
 		}
@@ -113,7 +116,10 @@ bool rechercheVainqueur_depTigre(Pos posT){
 		for(int i=0;i < 8;++i){
 			if(gestionPions_estDansPlateau(gestionPions_addPos(posT,p)) && gestionPions_estVide(gestionPions_addPos(posT,p)))
 				return(true);
-			else if(gestionPions_estChevre(gestionPions_addPos(posT,p)) && gestionPions_estVide(gestionPions_addPos(posT,gestionPions_multPosSca(2,p))))
+			else if(gestionPions_estDansPlateau(gestionPions_addPos(posT,p))
+					&& gestionPions_estDansPlateau(gestionPions_addPos(posT,gestionPions_multPosSca(2,p)))
+					&& gestionPions_estChevre(gestionPions_addPos(posT,p))
+					&& gestionPions_estVide(gestionPions_addPos(posT,gestionPions_multPosSca(2,p))))
 				return(true);
 			p=rechercheVainqueur_positionSuivanteImpaire(p);
 		}
@@ -138,7 +144,7 @@ bool rechercheVainqueur_depTousTigre(){
 }
 
 int rechercheVainqueur_vainqueurPresent(){
-	if(rechercheVainqueur_chevreCapture(plat.nbChevreCapture) == 7)
+	if(rechercheVainqueur_chevreCapture(plat.nbChevreCapture))
 		return 1;
 	else if(!rechercheVainqueur_depTousTigre() || !rechercheVainqueur_depChevre())
 		return 2;
