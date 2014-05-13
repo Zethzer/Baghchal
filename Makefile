@@ -1,7 +1,6 @@
 .PHONY:all
 
-#TARGETS=Baghchal
-TARGETS=test
+TARGETS=Baghchal
 
 all: $(TARGETS)
 
@@ -23,8 +22,7 @@ sources=$(wildcard *.c)
 	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
 	rm -f $@.$$$$
 
-#Baghchal: main.o plateau.o evenement.o gestionPions.o historique.o affichage.o save.o rechercheVainqueur.o
-test: test.o affichage.o plateau.o gestionPions.o historique.o evenement.o rechercheVainqueur.o save.o
+Baghchal: main.o jouer.o plateau.o evenement.o gestionPions.o historique.o affichage.o save.o rechercheVainqueur.o
 	$(CC) $(CFLAGS) $^ -o $@ $(CLIBRARY)
 
 include $(sources:.c=.d)

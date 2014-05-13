@@ -1,39 +1,52 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <ncurses.h>
+#include <stdbool.h>
 
+#include "jouer.h"
 #include "plateau.h"
 #include "affichage.h"
 #include "save.h"
 #include "rechercheVainqueur.h"
+#include "evenement.h"
 
 Plateau plat;
 
-extern WINDOW* winHist;
-
-void init(){
-    plateau_init();
-    affichage_init();
-    historique_init(h);
-    keypad(stdscr, TRUE);
-}
-                             
 int main(void){
-    int ch, fini = 0;
-    Historique h;
-    char str[20];
-    Pos p = gestionPions_initPos (2, 3);
-    Mvt m = gestionPions_initMvt (1, 1, 0, 0);
-    Coup* c;
+	// Déclarations
+	Historique h;
+	char nomFichierChar[100];
+	int codeVainqueur, codeTour, quitter = 0;
+	Pos pEvent;
 
-    init(&h);
-    
-    while (!fini){
-        
-    }
-    
-    
-    endwin();
-    return 0;
+	// Initialisation
+	jouer_init(&h);
+	keypad(stdscr, true);
+	mousemask(BUTTON1_CLICKED, NULL);
+
+	while(!quitter){
+		if((codeVainqueur=rechercheVainqueur_vainqueurPresent()))
+			jouer_gestionVainqueur(&h,codeVainqueur);
+		affichage_maj_all(h);
+		if(plat.tourJoueur)
+			affichage_message("Joueur Tigre, a vous de jouer.",5);
+		else
+			affichage_message("Joueur chevre, a vous de jouer.",5);
+		if(!evenement_recupererEvenement(&h,&pEvent))
+				;
+		else{
+			if(!(codeTour=jouer_gestionTour(&h,pEvent))){
+				if(!plat.nbChevresHorsPlateau)
+					plat.phaseJeu=1;
+			}
+			else if(codeTour == 1){
+				jouer_init(&h);
+			}
+			else if(codeTour == 2){
+				affichage_boiteDialogue(1, nomFichierChar);
+				save_import(nomFichierChar);
+			}
+		}
+	}
+
+	endwin();
+	return 0;
 }
-

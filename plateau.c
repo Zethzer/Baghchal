@@ -7,14 +7,6 @@
 #include "save.h"
 
 extern Plateau plat;
-extern WINDOW *winRest, *winChat;
-
-void init(Historique* h){
-	clear();
-	plateau_init();
-	affichage_init();
-	historique_init(h);
-}
 
 void plateau_init(){
 
@@ -85,15 +77,9 @@ int plateau_verifierMenu(Pos p){
 int plateau_clic2case (Pos pIn, Pos *pOut){
     pIn.x -= ((COLS-49)/2)+2;
     pIn.y -= ((LINES-25)/2)+1;
-    wmove(winRest, 3, 4);
-    wprintw(winRest, "%d %d", pIn.x, pIn.y);
-    wrefresh(winRest);
     if ((pIn.x%10 <=4) && (pIn.x%10 >= 0) && (pIn.y%5 <= 2) && (pIn.y%5 >=0) && (pIn.x <= 50) && (pIn.y <= 25)){
         pOut->x = pIn.x /10;
         pOut->y = pIn.y / 5;
-    wmove(winRest, 4, 4);
-    wprintw(winRest, "%d %d", pOut->x, pOut->y);
-    wrefresh(winRest);
         return(1);
     }else
         return(0);
@@ -139,9 +125,6 @@ int plateau_deplacementPion(Pos pSourisDep, Mvt* m, Historique *h){
 	}
 	plateau_deplacement(m->deb,m->fin);
 	pMilieu=gestionPions_posMilieu(m->deb,m->fin);
-	wmove(winRest,4,4);
-	wprintw(winRest, "yM=%d xM=%d",pMilieu.y,pMilieu.x);
-	wrefresh(winRest);
 	if(gestionPions_estTigre(m->fin) && gestionPions_estSaut(*m) && gestionPions_estChevre(pMilieu)){
 		plat.nbChevreCapture++;
 		plat.plateau[pMilieu.x][pMilieu.y].pion='.';
@@ -169,103 +152,3 @@ int plateau_placementPion(Pos pSourisDep, Historique* h){
 	}
 }
 
-int plateau_gestionTour(Historique* h, Pos pEvent){
-	Mvt m;
-	Coup *c;
-	int codeRetour, codeBouton;
-	Pos pPlat;
-
-	if(!plat.tourJoueur){ // Chèvre
-		wmove(winRest,2,5);
-		wprintw(winRest,"y=%d x=%d",pEvent.y,pEvent.x);
-		wrefresh(winRest);
-		if((codeRetour=plateau_verifierMenu(pEvent)) >= 1)
-			return(codeRetour);
-		if(!plat.phaseJeu){ // Placement
-			if(plateau_clic2case(pEvent,&pPlat)){
-				if(!plat.coupJoue){
-					plat.coupJoue=plateau_placementPion(pPlat,h);
-				}
-				else
-					affichage_message_erreur("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.",2);
-			}
-			if((codeBouton=plateau_clicAnnulerFinirTour(h,pEvent)))
-				return(0);
-			else
-				affichage_message_erreur("Vous devez jouer avant de finir votre tour.",2);
-		}
-		else{ // Déplacement
-			if(plateau_clic2case(pEvent, &pPlat)){
-				if(!plat.coupJoue){
-					if(plateau_deplacementPion(pPlat, &m, h))
-						return(3);
-					else{
-						c=historique_init_coup(m, 1, gestionPions_estSaut(m), 0, 2, plat.tourJoueur);
-						historique_ajouter_coup(h,c);
-						plat.coupJoue=1;
-					}
-				}
-				else
-					affichage_message_erreur("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.",2);
-			}
-			if((codeBouton=plateau_clicAnnulerFinirTour(h,pEvent)))
-				return(0);
-			else
-				affichage_message_erreur("Vous devez jouer avant de finir votre tour.",2);
-		}
-	}
-	else{ // Tigre
-		if((codeRetour=plateau_verifierMenu(pEvent)) >= 1)
-			return(codeRetour);
-		else if(plateau_clic2case(pEvent, &pPlat)){
-			if(!plat.coupJoue){
-				if(plateau_deplacementPion(pPlat, &m, h))
-					return(3);
-				else{
-					c=historique_init_coup(m, 1, gestionPions_estSaut(m), 0, 2, plat.tourJoueur);
-					historique_ajouter_coup(h,c);
-					plat.coupJoue=true;
-				}
-			}
-			else
-				affichage_message_erreur("Vous avez deja joue. Annulez votre dernier coup joue pour retenter ou finissez le tour.",2);
-		}
-		if((codeBouton=plateau_clicAnnulerFinirTour(h,pEvent)))
-			return(0);
-	}
-
-	return(0);
-}
-
-void plateau_gestionVainqueur(Historique* h, int v){
-	int codeRetour;
-	char nomFichierChar[100];
-	WINDOW *winWin;
-	Pos pMenu;
-
-	wclear(winChat);
-
-	if(v == 1)
-		winWin=affichage_message_victoire(1);
-	else
-		winWin=affichage_message_victoire(0);
-
-	do{
-		evenement_recupererEvenement(h,&pMenu);
-		codeRetour=plateau_verifierMenu(pMenu);
-		if(codeRetour == 1){
-			delwin(winWin);
-			init(h);
-		}
-		else if(codeRetour == 2){
-			affichage_boiteDialogue(1, nomFichierChar);
-			save_import(nomFichierChar);
-			delwin(winWin);
-			clear();
-			historique_init(h);
-			affichage_maj_Hist(*h);
-			affichage_init();
-		}
-	}while(codeRetour != 1 && codeRetour != 2);
-	
-}
