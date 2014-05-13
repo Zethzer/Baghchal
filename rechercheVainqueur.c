@@ -8,20 +8,20 @@ Pos rechercheVainqueur_positionSuivantePaire(Pos p){
 	Pos position = p;
 
 	if(p.x == 1 && p.y == 0){
-		p.x=0;
-		p.y=-1;
+		position.x=0;
+		position.y=-1;
 	}
 	else if(p.x == 0 && p.y == -1){
-		p.x=-1;
-		p.y=0;
+		position.x=-1;
+		position.y=0;
 	}
 	else if(p.x == -1 && p.y == 0){
-		p.x=0;
-		p.y=1;
+		position.x=0;
+		position.y=1;
 	}
 	else if(p.x == 0 && p.y == 1){
-		p.x=1;
-		p.y=0;
+		position.x=1;
+		position.y=0;
 	}
 
 	return(position);
@@ -31,36 +31,36 @@ Pos rechercheVainqueur_positionSuivanteImpaire(Pos p){
 	Pos position = p;
 
 	if(p.x == 1 && p.y == 0){
-		p.x=1;
-		p.y=-1;
+		position.x=1;
+		position.y=-1;
 	}
 	else if(p.x == 1 && p.y == -1){
-		p.x=0;
-		p.y=-1;
+		position.x=0;
+		position.y=-1;
 	}
 	else if(p.x == 0 && p.y == -1){
-		p.x=-1;
-		p.y=-1;
+		position.x=-1;
+		position.y=-1;
 	}
 	else if(p.x == -1 && p.y == -1){
-		p.x=-1;
-		p.y=0;
+		position.x=-1;
+		position.y=0;
 	}
 	else if(p.x == -1 && p.y == 0){
-		p.x=-1;
-		p.y=1;
+		position.x=-1;
+		position.y=1;
 	}
 	else if(p.x == -1 && p.y == 1){
-		p.x=0;
-		p.y=1;
+		position.x=0;
+		position.y=1;
 	}
 	else if(p.x == 0 && p.y == 1){
-		p.x=1;
-		p.y=1;
+		position.x=1;
+		position.y=1;
 	}
 	else if(p.x == 1 && p.y == 1){
-		p.x=1;
-		p.y=0;
+		position.x=1;
+		position.y=0;
 	}
 
 	return(position);
@@ -71,7 +71,7 @@ bool rechercheVainqueur_chevreCapture(int nbChevreCapture){
 }
 
 bool rechercheVainqueur_testDepChevre(Pos p, Pos pOffset){
-	return(gestionPions_estDansPlateau(gestionPions_addPos(p,pOffset)) && !gestionPions_estTigre(gestionPions_addPos(p,pOffset))));
+	return(gestionPions_estDansPlateau(gestionPions_addPos(p,pOffset)) && !gestionPions_estTigre(gestionPions_addPos(p,pOffset)));
 }
 
 bool rechercheVainqueur_depChevre(){
