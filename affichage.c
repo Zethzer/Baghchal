@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "plateau.h"
 #include "affichage.h"
 
 extern Plateau plat;
+
 
 WINDOW *winCapture, *winHist, *winPlat, *winChat, *winRest;
 
@@ -42,7 +44,16 @@ void affichage_print_in_middle(WINDOW *win, int starty, int startx, int width, c
 	refresh();
 }
 
-
+WINDOW* affichage_winErreur(void){
+    WINDOW* winErr = create_newwin(6, COLS-6, (LINES-7)/2, 3);
+    wbkgd(winErr, COLOR_PAIR(1));
+    affichage_print_in_middle(winErr, 1, 0, COLS-6, "Agrandir l'affichage", 0);
+    affichage_print_in_middle(winErr, 2, 0, COLS-6, "40X150 min", 0);
+    affichage_print_in_middle(winErr, 3, 0, COLS-6, "Appuyer sur une touche", 0);
+    affichage_print_in_middle(winErr, 4, 0, COLS-6, "pour quitter", 0);
+    wrefresh(winErr);
+    return winErr;
+}
 
 WINDOW *affichage_init_case_capture (void){
     winCapture = create_newwin(6, 40, 7, 5);
@@ -166,20 +177,27 @@ void affichage_init(void){
     init_pair(3, COLOR_BLUE, COLOR_WHITE);
     init_pair(4, COLOR_RED, COLOR_BLACK);
     init_pair(5, COLOR_WHITE, COLOR_BLACK);
-    affichage_print_in_middle(NULL, 3, 0, COLS, "Bagh Chal", 0);
-    affichage_init_case_capture();
-    affichage_init_historique();
-    affichage_init_plateau();
-    affichage_init_Chat();
-    affichage_message("Bonjour !", 5);
-    affichage_init_ChevreRestante();
-    affichage_init_FinTour();
-    affichage_init_Annuler();
-    affichage_init_new();
-    affichage_init_save();
-    affichage_init_load();
-    affichage_init_exit();
-    doupdate();
+    if(COLS >= 150 && LINES >=40){
+        affichage_print_in_middle(NULL, 3, 0, COLS, "Bagh Chal", 0);
+        affichage_init_case_capture();
+        affichage_init_historique();
+        affichage_init_plateau();
+        affichage_init_Chat();
+        affichage_message("Bonjour !", 5);
+        affichage_init_ChevreRestante();
+        affichage_init_FinTour();
+        affichage_init_Annuler();
+        affichage_init_new();
+        affichage_init_save();
+        affichage_init_load();
+        affichage_init_exit();
+        doupdate();
+    }else{
+        affichage_winErreur();
+        getch();
+        endwin();
+        exit (1);
+    }
 }
 
 void affichage_message (char* Message, int color){
